@@ -1,53 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8"> 
-    <title>Bootstrap 实例 - 标题</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-      $(function(){
-        $(".tp-content")
-          .css({"opacity":"0","position":"absolute","left":"50%","width":"100%"})
-          .animate({"opacity":"1","left":"0"},1000);
-        $(".tp-oftdd").click(function(){
-          $(".tp-bttxoftdd").html($(this).html());
-          $(".tp-selecteditem").html($(this).html());
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <div class="tp-content">
-      <div class="container">
-        <br>
-        <div class="jumbotron">
-          额
-        </div>
-        <div class="tp-tdd dropdown">
-          <button class="tp-btoftdd dropdown" type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
-            <span class="tp-bttxoftdd">Java</span>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation">
-              <a class="tp-oftdd" role="menuitem" tabindex="-1">Java</a>
-            </li>
-            <li role="presentation">
-              <a class="tp-oftdd" role="menuitem" tabindex="-1">Python</a>
-            </li>
-            <li role="presentation">
-              <a class="tp-oftdd" role="menuitem" tabindex="-1">HTML</a>
-            </li>
-            <li role="presentation" class="divider"></li>
-            <li role="presentation">
-              <a class="tp-oftdd" role="menuitem" tabindex="-1">都不是</a>
-            </li>
-          </ul>
-        </div>
-        <div class="well">当前选中的:<span class="tp-selecteditem"></span></div>
-      </div>
-    </div>
-  </body>
+ <head> 
+  <meta charset="utf-8" /> 
+  <title>Bootstrap 实例 - 标题</title> 
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" /> 
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script> 
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+  <script>
+   $(function(){
+    $(".tp-content")
+     .css({"opacity":"0","position":"absolute","left":"50%","width":"100%"})
+     .animate({"opacity":"1","left":"0"},1000);
+    $(".tp-oftdd").click(function(){
+     var $button = $(`#${$("this").parent().parent().attr("aria-labelledby")}`)
+     $button.find(".tp-selecteditem").html($(this).html());
+    });
+   });
+  </script> 
+ </head> 
+ <body> 
+  <div class="tp-content"> 
+   <div class="container"> 
+    <br /> 
+    <div class="jumbotron">
+      额 
+    </div> 
+    <div class="tp-tdd dropdown"> 
+     <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"> 
+      <span class="tp-selecteditem">Java</span>
+      <span class="caret"></span> 
+     </button> 
+     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"> 
+      <li role="presentation"> <a class="tp-oftdd" role="menuitem" tabindex="-1">Java</a> </li> 
+      <li role="presentation"> <a class="tp-oftdd" role="menuitem" tabindex="-1">Python</a> </li> 
+      <li role="presentation"> <a class="tp-oftdd" role="menuitem" tabindex="-1">HTML</a> </li> 
+      <li role="presentation" class="divider"></li> 
+      <li role="presentation"> <a class="tp-oftdd" role="menuitem" tabindex="-1">都不是</a> </li> 
+     </ul> 
+    </div> 
+    <div class="well">
+     当前选中的:
+     <span class="tp-selecteditem"></span>
+    </div> 
+   </div> 
+  </div>   
+ </body>
 </html>
