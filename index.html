@@ -8,22 +8,25 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
       $(function(){
-        $("body").css({"zoom":1})
+        $("body,html").css({"width":"100%","overflow":"hidden"});
         $(".tp-content")
           .css({"opacity":"0","position":"absolute","left":"50%","width":"100%"})
           .animate({"opacity":"1","left":"0"},1000);
-        
+        $(".tp-since").css({"overflow":"hidden","width":"100%"});
       });
     </script>
   </head>
   <body>
-    <div class="tp-content">
-      <div class="container">
-        <br>
-        <div class="jumbotron">
-          <h1>TheRedMaker_</h1>
-        </div>
-        你正在访问<small>https://theredmaker.github.io/</small>
+    <div class="tp-since">
+      <div class="tp-content">
+        <div class="container">
+          <br>
+          <div class="jumbotron">
+            <h1>TheRedMaker_</h1>
+          </div>
+          你正在访问<small>https://theredmaker.github.io/</small>
+      </div>
+
     </div>
   </body>
 </html>
