@@ -8,9 +8,12 @@
   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> 
   <script>
    $(function(){
+    $("body,html").css({"width":"100%","overflow":"hidden"});
     $(".tp-content")
-     .css({"opacity":"0","position":"absolute","left":"50%","width":"100%"})
-     .animate({"opacity":"1","left":"0"},1000);
+    .css({"opacity":"0","position":"absolute","left":"50%","width":"100%"})
+    .animate({"opacity":"1","left":"0"},1000,function(){
+     $("body,html").css({"width":"0","overflow":"visible"});
+    });
     $(".tp-peswitch").click(function(){
      $(".tp-groupof-peswitch").fadeTo(100,0,function(){
       $(".tp-peswitch").toggleClass("btn-success");
@@ -24,7 +27,7 @@
       "僵尸":"zombie",
       "骷髅":"skeleton",
       "苦力怕":"creeper",
-      "猪人":"zombie_piglin",
+      "猪人":"zombified_piglin",
       "凋零骷髅":"wither_skeleton"
      };
      var swnm = swlst[$(".tp-swselect").val()];
