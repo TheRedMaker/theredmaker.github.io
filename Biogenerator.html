@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="utf-8" /> 
+  <title>trm</title> 
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" /> 
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script> 
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+  <script>
+   $(function(){
+    $(".tp-content")
+     .css({"opacity":"0","position":"absolute","left":"50%","width":"100%"})
+     .animate({"opacity":"1","left":"0"},1000);
+    $(".tp-peswitch").click(function(){
+     $(".tp-groupof-peswitch").fadeTo(100,0,function(){
+      $(".tp-peswitch").toggleClass("btn-success");
+      $(".tp-peswitch").html("关");
+      $(".tp-peswitch.btn-success").html("开");
+      $(".tp-groupof-peswitch").fadeTo(100,1);
+     });
+    });
+    $(".tp-build").click(function(){
+     var swlst = {
+      "僵尸":"zombie",
+      "骷髅":"skeleton",
+      "苦力怕":"creeper",
+      "猪人":"zombie_piglin",
+      "凋零骷髅":"wither_skeleton"
+     };
+     var swnm = swlst[$(".tp-swselect").val()];
+     var pe = ($(".tp-peswitch").html()=="开") ? "true" : "false";
+     var resultstr = `summon minecraft:${swnm} ~ ~1 ~ {CanPickUpTool:${pe}}`
+     $(".tp-result").fadeOut(100,function(){
+      $(".tp-result").html(resultstr).slideDown(100);
+     });
+    });
+   });
+  </script> 
+ </head> 
+ <body> 
+  <div class="tp-content"> 
+   <div class="container"> 
+    <br /> 
+    <div class="jumbotron">
+     <h1>生物生成器</h1>
+     <p>--by mywzy and trm</p>
+   </div>
+    <div class="form-group">
+     <label>生物</label>
+     <select class="tp-swselect form-control">
+      <option>僵尸</option>
+      <option>骷髅</option>
+      <option>苦力怕</option>
+      <option>猪人</option>
+      <option>凋零骷髅</option>
+     </select>
+     <p/>
+    </div>
+    <div class="tp-groupof-peswitch form-group">
+     <div class="input-group">
+      <span class="input-group-addon form-control-static">捡起装备</span>
+      <span class="input-group-btn">
+       <button class="tp-peswitch btn btn-default">关</button>
+      </span>
+     </div>
+    </div>
+    <div class="form-group">
+     <button class="tp-build btn btn-primary btn-block">生成指令</button>
+    </div>
+    <span>结果</span>
+    <pre class="tp-result"></pre>
+   </div> 
+  </div>   
+ </body>
+</html>
+
+   
