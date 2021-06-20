@@ -22,6 +22,13 @@
       $(".tp-groupof-peswitch").fadeTo(100,1);
      });
     });
+    $(".tp-swselect").change(function(){
+     if ($(".tp-swselect").val()=="苦力怕"){
+      $(".tp-eq").fadeOut(100);
+     } else {
+      $(".tp-eq").fadeIn(100);
+     };
+    });
     $(".tp-build").click(function(){
      var swlst = {
       "僵尸":"zombie",
@@ -67,7 +74,7 @@
      <input type="text" class="form-control" id="name" placeholder="请输入跟踪范围">
     </div>
     <div class="panel panel-default">
-     <div class="panel-heading">装备</div>
+     <div class="tp-eq panel-heading">装备</div>
      <div class="panel-body">
       <div class="form-group">
        <label>头部</label>
