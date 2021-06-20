@@ -24,11 +24,24 @@
     });
     $(".tp-swselect").change(function(){
      if ($(".tp-swselect").val()=="苦力怕"){
-      $(".tp-eq").fadeOut(100);
+      $(".tp-eq").fadeTo(200,0,function(){
+       $(".tp-eq").slideUp(200);
+      });
      } else {
-      $(".tp-eq").fadeIn(100);
+      $(".tp-eq").slideDown(200,function(){
+       $(".tp-eq").fadeTo(200,1);
+      });
      };
-    });
+     if ($(".tp-swselect").val()=="苦力怕"){
+      $(".tp-forcreeper").slideDown(200,function(){
+       $(".tp-forcreeper").fadeTo(200,1);
+      });
+     } else {
+      $(".tp-forcreeper").fadeTo(200,0,function(){
+       $(".tp-forcreeper").slideUp(200);
+      });
+     };
+    }).change();
     $(".tp-build").click(function(){
      var swlst = {
       "僵尸":"zombie",
@@ -73,8 +86,8 @@
      <label>跟踪范围</label>
      <input type="text" class="form-control" id="name" placeholder="请输入跟踪范围">
     </div>
-    <div class="panel panel-default">
-     <div class="tp-eq panel-heading">装备</div>
+    <div class="tp-eq panel panel-default">
+     <div class="panel-heading">装备</div>
      <div class="panel-body">
       <div class="form-group">
        <label>头部</label>
@@ -98,6 +111,19 @@
         <option>锁链</option>
         <option>皮革</option>
        </select>
+      </div>
+     </div>
+    </div>
+    <div class="tp-forcreeper panel panel-default">
+     <div class="panel-heading">苦力怕专属</div>
+     <div class="panel-body">
+      <div class="form-group">
+       <label>爆炸威力</label>
+       <input type="text" class="form-control" id="name" placeholder="请输入爆炸威力">
+      </div>
+      <div class="form-group">
+       <label>爆炸时间</label>
+       <input type="text" class="form-control" id="name" placeholder="请输入爆炸时间">
       </div>
      </div>
     </div>
