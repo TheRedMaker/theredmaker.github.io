@@ -1,0 +1,97 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Minecraft生物属性数据</title>
+        <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+        <style>
+            table
+            {
+                margin:0px auto 100px auto;
+                border-collapse:collapse;
+                border:2px solid black;
+                box-shadow:0px 0px 8px black;
+            }
+
+            td, th
+            {
+                border:2px solid black;
+                padding:15px 15px;
+                text-align:center;
+            }
+
+            h1
+            {
+                text-align:center;
+            }
+
+            p
+            {
+                text-align:center;
+                margin-bottom:100px;
+            }
+        </style>
+    </head>
+
+    <body style="font-size:20px;">
+        <h1 style="margin-bottom:100px;">
+            Minecraft生物属性数据
+            <br/>
+            作者：TheRedMaker_
+        </h1>
+        <script>
+            var cths = ["生物", "命名空间ID", "血量", "跟踪范围", "移动速度", "击退抗性", "攻击伤害", "攻击击退"],
+                enbts = [
+                    ["僵尸", "zombie", 20, 35, 0.23000000417232513, 0, 3, 0],
+                    ["溺尸", "drowned", 20, 35, 0.23000000417232513, 0, 3, 0],
+                    ["尸壳", "husk", 20, 35, 0.23000000417232513, 0, 3, 0],
+                    ["僵尸猪灵", "zombified_piglin", 20, 35, 0.23000000417232513, 0, 5, 0],
+                    ["猪灵", "piglin", 20, 16, 0.3499999940395355, 0, 5, 0],
+                    ["猪灵蛮兵", "piglin_brute", 50, 16, 0.3499999940395355, 0, 7, 0],
+                    ["骷髅", "skeleton", 20, 16, 0.25, 0, 2, 0],
+                    ["流浪者", "stray", 20, 16, 0.25, 0, 2, 0],
+                    ["凋零骷髅", "wither_skeleton", 20, 16, 0.25, 0, 4, 0],
+                    ["爬行者", "creeper", 20, 16, 0.25, 0, 2, 0],
+                    ["史莱姆(Size:3)", "slime", 16, 16, 0.6000000238418579, 0, 4, 0],
+                    ["史莱姆(Size:2)", "slime", 4, 16, 0.4000000059604645, 0, 2, 0],
+                    ["史莱姆(Size:1)", "slime", 1, 16, 0.30000001192092896, 0, 1, 0],
+                    ["岩浆史莱姆(Size:3)", "magma_cube", 16, 16, 0.6000000238418579, 0, 4, 0],
+                    ["岩浆史莱姆(Size:2)", "magma_cube", 4, 16, 0.4000000059604645, 0, 2, 0],
+                    ["岩浆史莱姆(Size:1)", "magma_cube", 1, 16, 0.30000001192092896, 0, 1, 0],
+                    ["恶魂", "ghast", 10, 100, "0.699999988079071(没用)", 0, 0, 0]
+                ],
+                attrths = ["名称", "属性名"],
+                attrtds = [
+                    ["血量", "generic.max_health"],
+                    ["跟踪范围", "generic.follow_range"],
+                    ["移动速度", "generic.movement_speed"],
+                    ["击退抗性", "generic.knockback_resistance"],
+                    ["攻击伤害", "generic.attack_damage"],
+                    ["攻击击退", "generic.attack_knockback"]
+                ];
+
+            function make_table(thls, tdls, tc)
+            {
+                $("body").append("<table class=" + tc + "></table>");
+                $("table." + tc).append("<tr class='th'></tr>");
+                for (thlsI in thls)
+                {
+                    $("table." + tc + " tr.th").append("<th>" + thls[thlsI] + "</th>");
+                }
+
+                for (tdlsI in tdls)
+                {
+                    $("table." + tc).append("<tr " + "class=td" + tdlsI + "></tr>");
+                    for (tdlsII in tdls[tdlsI])
+                    {
+                        $("table." + tc + " tr.td" + tdlsI).append("<td>" + tdls[tdlsI][tdlsII] + "</td>");
+                    }
+                }
+            }
+
+            make_table(cths, enbts, "t1");
+            make_table(attrths, attrtds, "t2");
+        </script>
+    </body>
+</html>
