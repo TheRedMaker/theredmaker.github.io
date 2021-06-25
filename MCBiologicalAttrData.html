@@ -54,8 +54,11 @@
 
                 make_table(cths, enbts, "t1");
                 make_table(attrths, attrtds, "t2");
-                $(".tp-content").hide();
-                $(".tp-content").slideDown(1000);
+                $(".tp-content")
+                    .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
+                    .animate({ "opacity": "1", "left": "0" }, 1000, function () {
+                        $(".tp-content").css({ "position": "static" });
+                    });
             })
         </script>
         <style>
