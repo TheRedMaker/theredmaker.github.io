@@ -9,6 +9,7 @@
     <script>
         $(function () {
             $(".tp-content")
+                .removeClass("hide")
                 .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
                 .animate({ "opacity": "1", "left": "0" }, 1000, function () {
                     $(".tp-content").css({ "position": "static" });
@@ -58,7 +59,7 @@
     </script>
 </head>
 <body>
-    <div class="tp-content">
+    <div class="tp-content hide">
         <div class="container">
             <br />
             <div class="jumbotron">
