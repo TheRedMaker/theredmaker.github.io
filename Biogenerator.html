@@ -9,6 +9,16 @@
   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script>
     $(function () {
+      function tpshow(elem) {
+        $(`${elem}:hidden`).slideDown(200, function () {
+          $(elem).fadeTo(200, 1);
+        });
+      };
+      function tphide(elem) {
+        $(`${elem}:visible`).fadeTo(200, 0, function () {
+          $(elem).slideUp(200);
+        });
+      };
       $(".tp-content")
         .removeClass("hide")
         .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
@@ -22,60 +32,87 @@
           $this.is(".btn-success") ? $this.html("开") : $this.html("关");
           $this.parent().parent().parent().fadeTo(100, 1);
           if ($(".tp-inexswitch").html() == "开") {
-            $(".tp-explosion-countdown").attr("disabled","");
+            $(".tp-explosion-countdown").attr("disabled", "");
             $(".tp-explosion-countdown").prev().addClass("text-muted");
           } else {
             $(".tp-explosion-countdown").removeAttr("disabled");
             $(".tp-explosion-countdown").prev().removeClass("text-muted");
+          };
+          if ($(".tp-colorhexswitch").html() == "开") {
+            $(".tp-namecolor").attr("disabled", "");
+            $(".tp-namecolor").parent().addClass("text-muted");
+            $(".tp-colorhex").removeAttr("disabled");
+            $(".tp-colorhex").parent().parent().removeClass("text-muted");
+          } else {
+            $(".tp-colorhex").attr("disabled", "");
+            $(".tp-colorhex").parent().parent().addClass("text-muted");
+            $(".tp-namecolor").removeAttr("disabled");
+            $(".tp-namecolor").parent().removeClass("text-muted");
           };
         });
       });
 
       $(".tp-swselect").change(function () {
         if ($(".tp-swselect").val() == "苦力怕") {
-          $(".tp-eq:visible").fadeTo(200, 0, function () {
-            $(".tp-eq").slideUp(200);
-          });
-          $(".tp-forslime:visible").fadeTo(200, 0, function () {
-            $(".tp-forslime").slideUp(200);
-          });
-          $(".tp-forcreeper:hidden").slideDown(200, function () {
-            $(".tp-forcreeper").fadeTo(200, 1);
-          });
+          tphide(".tp-eq");
+          tphide(".tp-forslime");
+          tphide(".tp-forghast");
+          tpshow(".tp-forcreeper");
         } else if ($(".tp-swselect").val() == "史莱姆" || $(".tp-swselect").val() == "岩浆史莱姆") {
-          $(".tp-eq:visible").fadeTo(200, 0, function () {
-            $(".tp-eq").slideUp(200);
-          });
-          $(".tp-forcreeper:visible").fadeTo(200, 0, function () {
-            $(".tp-forcreeper").slideUp(200);
-          });
-          $(".tp-forslime:hidden").slideDown(200, function () {
-            $(".tp-forslime").fadeTo(200, 1);
-          });
+          tphide(".tp-eq");
+          tpshow(".tp-forslime");
+          tphide(".tp-forghast");
+          tphide(".tp-forcreeper");
+        } else if ($(".tp-swselect").val() == "恶魂") {
+          tphide(".tp-eq");
+          tphide(".tp-forslime");
+          tpshow(".tp-forghast");
+          tphide(".tp-forcreeper");
         } else {
-          $(".tp-eq:hidden").slideDown(200, function () {
-            $(".tp-eq").fadeTo(200, 1);
-          });
-          $(".tp-forcreeper:visible").fadeTo(200, 0, function () {
-            $(".tp-forcreeper").slideUp(200);
-          });
-          $(".tp-forslime:visible").fadeTo(200, 0, function () {
-            $(".tp-forslime").slideUp(200);
-          });
+          tpshow(".tp-eq");
+          tphide(".tp-forslime");
+          tphide(".tp-forghast");
+          tphide(".tp-forcreeper");
         };
       });
       $(".tp-swselect").change();
       $(".tp-build").click(function () {
         var swlst = {
           "僵尸": "zombie",
-          "骷髅": "skeleton",
-          "苦力怕": "creeper",
-          "猪人": "zombified_piglin",
-          "凋零骷髅": "wither_skeleton"
+
+        };
+        var colorlst = {
+          "默认": "",
+          "白色": "white",
+          "黑色": "black",
+          "红色": "red",
+          "绿色": "green",
+          "黄色": "yellow",
+          "蓝色": "blue",
+          "橙色": "orange",
+          "青色": "aqua",
+          "紫色": "purple",
+          "灰色": "grey",
+          "深蓝色": "dark_blue",
+          "深绿色": "dark_green",
+          "深青色": "dark_aqua",
+          "深红色": "dark_red",
+          "深紫色": "dark_purple",
+          "金色": "gold",
         };
         var swnm = swlst[$(".tp-swselect").val()];
         var pe = ($(".tp-peswitch").html() == "开") ? "true" : "false";
-        var resultstr = `summon minecraft:${swnm} ~ ~1 ~ {CanPickUpTool:${pe}}`
+        var nbtdict = {};
+        if ($(".tp-name").val()) {
+          var CustomNameJSON = {};
+          CustomNameJSON.text = $(".tp-name").val();
+          CustomNameJSON.color = ($(".tp-colorhexswitch").html() == "开") ? `#${$(".tp-colorhex").val()}` : colorlst[$(".tp-namecolor").val()];
+          CustomNameJSON.color = ($(".tp-CustomNameVisible").html() == "开") ? true : false;
+          nbtdict.CustomName = JSON.stringify(CustomNameJSON);
+
+        };
+        nbtdict.CustomNameVisible = ($(".tp-CustomNameVisible").html() == "开") ? true : false;
+        var resultstr = `summon minecraft:${swnm} ~ ~1 ~ ${JSON.stringify(nbtdict)}`
         $(".tp-result").fadeOut(100, function () {
           $(".tp-result").html(resultstr).slideDown(100);
         });
@@ -123,11 +160,11 @@
         <div class="panel-body">
           <div class="form-group">
             <label>名字</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入名字">
+            <input type="text" class="tp-name form-control" placeholder="请输入名字">
           </div>
           <div class="form-group">
             <label>颜色</label>
-            <select class="form-control">
+            <select class="tp-namecolor form-control">
               <option>默认</option>
               <option>白色</option>
               <option>黑色</option>
@@ -139,13 +176,34 @@
               <option>青色</option>
               <option>紫色</option>
               <option>灰色</option>
+              <option>深蓝色</option>
+              <option>深绿色</option>
+              <option>深青色</option>
+              <option>深红色</option>
+              <option>深紫色</option>
+              <option>金色</option>
             </select>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">使用十六进制颜色（开启后禁用下拉）</span>
+              <span class="input-group-btn">
+                <button class="tp-colorhexswitch tp-switch btn btn-default">关</button>
+              </span>
+            </div>
+          </div>
+          <div class="form-group text-muted">
+            <label>十六进制颜色代码</label>
+            <div class="input-group">
+              <span class="input-group-addon">#</span>
+              <input type="text" class="tp-colorhex form-control" placeholder="输入十六进制颜色代码" disabled>
+            </div>
           </div>
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon form-control-static">粗体</span>
               <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
+                <button class="tp-namebold tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -153,7 +211,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">斜体</span>
               <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
+                <button class="tp-namebold tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -161,7 +219,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">下划线</span>
               <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
+                <button class="tp-namebold tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -169,7 +227,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">删除线</span>
               <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
+                <button class="tp-namebold tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -177,7 +235,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">乱码</span>
               <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
+                <button class="tp-namebold tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -186,7 +244,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">始终显示名称</span>
               <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
+                <button class="tp-CustomNameVisible tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -331,11 +389,11 @@
         <div class="panel-body">
           <div class="form-group">
             <label>爆炸半径</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入爆炸半径">
+            <input type="text" class="form-control" placeholder="请输入爆炸半径">
           </div>
           <div class="form-group">
             <label>爆炸倒计时</label>
-            <input type="text" class="tp-explosion-countdown form-control" id="name" placeholder="请输入爆炸倒计时">
+            <input type="text" class="tp-explosion-countdown form-control" placeholder="请输入爆炸倒计时">
           </div>
           <div class="form-group">
             <div class="input-group">
@@ -360,11 +418,16 @@
         <div class="panel-body">
           <div class="form-group">
             <label>尺寸</label>
-            <select class="tp-sizeselect form-control">
-              <option>大</option>
-              <option>中</option>
-              <option>小</option>
-            </select>
+            <input type="text" class="form-control" placeholder="请输入尺寸（1，2，3或更大）">
+          </div>
+        </div>
+      </div>
+      <div class="tp-forghast panel panel-default">
+        <div class="panel-heading">恶魂专属</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>火球爆炸威力</label>
+            <input type="text" class="form-control" placeholder="火球爆炸威力">
           </div>
         </div>
       </div>
@@ -373,27 +436,27 @@
         <div class="panel-body">
           <div class="form-group">
             <label>血量</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>跟踪范围</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>移动速度</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>击退抗性</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>攻击伤害</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>攻击击退</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
         </div>
       </div>
@@ -402,27 +465,27 @@
         <div class="panel-body">
           <div class="form-group">
             <label>主手掉落几率</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>副手掉落几率</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>头部盔甲掉落几率</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>上身盔甲掉落几率</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>护腿盔甲掉落几率</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
           <div class="form-group">
             <label>靴子盔甲掉落几率</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入">
+            <input type="text" class="form-control" placeholder="请输入">
           </div>
         </div>
       </div>
