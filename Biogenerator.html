@@ -1,361 +1,453 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <title>Minecraft生物生成器</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-        $(function () {
-            $(".tp-content")
-                .removeClass("hide")
-                .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
-                .animate({ "opacity": "1", "left": "0" }, 1000, function () {
-                    $(".tp-content").css({ "position": "static" });
-                });
-            $(".tp-switch").click(function () {
-                $this = $(this);
-                $this.parent().parent().parent().fadeTo(100, 0, function () {
-                    $this.toggleClass("btn-success");
-                    $this.is(".btn-success") ? $this.html("开") : $this.html("关");
-                    $this.parent().parent().parent().fadeTo(100, 1);
-                });
-            });
-
-            $(".tp-swselect").change(function () {
-                if ($(".tp-swselect").val() == "苦力怕") {
-                    $(".tp-eq").fadeTo(200, 0, function () {
-                        $(".tp-eq").slideUp(200);
-                        $(".tp-forcreeper").slideDown(200, function () {
-                            $(".tp-forcreeper").fadeTo(200, 1);
-                        });
-                    });
-                } else {
-                    $(".tp-eq").slideDown(200, function () {
-                        $(".tp-eq").fadeTo(200, 1);
-                        $(".tp-forcreeper:visible").fadeTo(200, 0, function () {
-                            $(".tp-forcreeper").slideUp(200);
-                        });
-                    });
-                };
-            }).change();
-            $(".tp-build").click(function () {
-                var swlst = {
-                    "僵尸": "zombie",
-                    "骷髅": "skeleton",
-                    "苦力怕": "creeper",
-                    "猪人": "zombified_piglin",
-                    "凋零骷髅": "wither_skeleton"
-                };
-                var swnm = swlst[$(".tp-swselect").val()];
-                var pe = ($(".tp-peswitch").html() == "开") ? "true" : "false";
-                var resultstr = `summon minecraft:${swnm} ~ ~1 ~ {CanPickUpTool:${pe}}`
-                $(".tp-result").fadeOut(100, function () {
-                    $(".tp-result").html(resultstr).slideDown(100);
-                });
-            });
+  <meta charset="utf-8" />
+  <title>Minecraft生物生成器</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    $(function () {
+      $(".tp-content")
+        .removeClass("hide")
+        .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
+        .animate({ "opacity": "1", "left": "0" }, 1000, function () {
+          $(".tp-content").css({ "position": "static" });
         });
-    </script>
+      $(".tp-switch").click(function () {
+        $this = $(this);
+        $this.parent().parent().parent().fadeTo(100, 0, function () {
+          $this.toggleClass("btn-success");
+          $this.is(".btn-success") ? $this.html("开") : $this.html("关");
+          $this.parent().parent().parent().fadeTo(100, 1);
+        });
+      });
+
+      $(".tp-swselect").change(function () {
+        if ($(".tp-swselect").val() == "苦力怕") {
+          $(".tp-eq:visible").fadeTo(200, 0, function () {
+            $(".tp-eq").slideUp(200);
+          });
+          $(".tp-forslime:visible").fadeTo(200, 0, function () {
+            $(".tp-forslime").slideUp(200);
+          });
+          $(".tp-forcreeper:hidden").slideDown(200, function () {
+            $(".tp-forcreeper").fadeTo(200, 1);
+          });
+        } else if ($(".tp-swselect").val() == "史莱姆" || $(".tp-swselect").val() == "岩浆史莱姆") {
+          $(".tp-eq:visible").fadeTo(200, 0, function () {
+            $(".tp-eq").slideUp(200);
+          });
+          $(".tp-forcreeper:visible").fadeTo(200, 0, function () {
+            $(".tp-forcreeper").slideUp(200);
+          });
+          $(".tp-forslime:hidden").slideDown(200, function () {
+            $(".tp-forslime").fadeTo(200, 1);
+          });
+        } else {
+          $(".tp-eq:hidden").slideDown(200, function () {
+            $(".tp-eq").fadeTo(200, 1);
+          });
+          $(".tp-forcreeper:visible").fadeTo(200, 0, function () {
+            $(".tp-forcreeper").slideUp(200);
+          });
+          $(".tp-forslime:visible").fadeTo(200, 0, function () {
+            $(".tp-forslime").slideUp(200);
+          });
+        };
+      });
+      $(".tp-swselect").change();
+      $(".tp-build").click(function () {
+        var swlst = {
+          "僵尸": "zombie",
+          "骷髅": "skeleton",
+          "苦力怕": "creeper",
+          "猪人": "zombified_piglin",
+          "凋零骷髅": "wither_skeleton"
+        };
+        var swnm = swlst[$(".tp-swselect").val()];
+        var pe = ($(".tp-peswitch").html() == "开") ? "true" : "false";
+        var resultstr = `summon minecraft:${swnm} ~ ~1 ~ {CanPickUpTool:${pe}}`
+        $(".tp-result").fadeOut(100, function () {
+          $(".tp-result").html(resultstr).slideDown(100);
+        });
+      });
+    });
+  </script>
 </head>
+
 <body>
-    <div class="tp-content hide">
-        <div class="container">
-            <br />
-            <div class="jumbotron">
-                <h1>生物生成器</h1>
-                <p>
-                    网页设计 -- <a href="https://myworldzycpc.github.io/">myworldzycpc</a><br>
-                    游戏数据 -- <a href="https://theredmaker.github.io/">TheRedMaker_</a>
-                </p>
-                <p>
-                    <a class="btn btn-primary" href="https://theredmaker.github.io/MCBiologicalAttrData.html">
-                        Minecraft生物属性数据
-                    </a>
-                </p>
+  <div class="tp-content hide">
+    <div class="container">
+      <br />
+      <div class="jumbotron">
+        <h1>生物生成器</h1>
+        <p>
+          网页设计 -- <a href="https://myworldzycpc.github.io/">myworldzycpc</a><br>
+          游戏数据 -- <a href="https://theredmaker.github.io/">TheRedMaker_</a>
+        </p>
+        <p>
+          <a class="btn btn-primary" href="https://theredmaker.github.io/MCBiologicalAttrData.html">
+            Minecraft生物属性数据
+          </a>
+        </p>
+      </div>
+      <div class="form-group">
+        <label>生物</label>
+        <select class="tp-swselect form-control">
+          <option>僵尸</option>
+          <option>溺尸</option>
+          <option>尸壳</option>
+          <option>僵尸猪灵</option>
+          <option>猪灵</option>
+          <option>猪灵蛮兵</option>
+          <option>骷髅</option>
+          <option>流浪者</option>
+          <option>凋零骷髅</option>
+          <option>苦力怕</option>
+          <option>史莱姆</option>
+          <option>岩浆史莱姆</option>
+          <option>恶魂</option>
+        </select>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">命名</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>名字</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入名字">
+          </div>
+          <div class="form-group">
+            <label>颜色</label>
+            <select class="form-control">
+              <option>默认</option>
+              <option>白色</option>
+              <option>黑色</option>
+              <option>红色</option>
+              <option>绿色</option>
+              <option>黄色</option>
+              <option>蓝色</option>
+              <option>橙色</option>
+              <option>青色</option>
+              <option>紫色</option>
+              <option>灰色</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">粗体</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
             </div>
-            <div class="form-group">
-                <label>生物</label>
-                <select class="tp-swselect form-control">
-                    <option>僵尸</option>
-                    <option>骷髅</option>
-                    <option>苦力怕</option>
-                    <option>猪人</option>
-                    <option>凋零骷髅</option>
-                </select>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">斜体</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">命名</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>名字</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入名字">
-                    </div>
-                    <div class="form-group">
-                        <label>颜色</label>
-                        <select class="tp-swselect form-control">
-                            <option>默认</option>
-                            <option>白色</option>
-                            <option>黑色</option>
-                            <option>红色</option>
-                            <option>绿色</option>
-                            <option>黄色</option>
-                            <option>蓝色</option>
-                            <option>橙色</option>
-                            <option>青色</option>
-                            <option>紫色</option>
-                            <option>灰色</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">粗体</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">斜体</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">下划线</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">删除线</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">乱码</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">下划线</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
             </div>
-            <div class="tp-eq panel panel-default">
-                <div class="panel-heading">装备</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>头部</label>
-                        <select class="tp-swselect form-control">
-                            <option>无</option>
-                            <option>钻石</option>
-                            <option>黄金</option>
-                            <option>铁</option>
-                            <option>锁链</option>
-                            <option>皮革</option>
-                            <option>南瓜</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>身体</label>
-                        <select class="tp-swselect form-control">
-                            <option>无</option>
-                            <option>钻石</option>
-                            <option>黄金</option>
-                            <option>铁</option>
-                            <option>锁链</option>
-                            <option>皮革</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>护腿</label>
-                        <select class="tp-swselect form-control">
-                            <option>无</option>
-                            <option>钻石</option>
-                            <option>黄金</option>
-                            <option>铁</option>
-                            <option>锁链</option>
-                            <option>皮革</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>靴子</label>
-                        <select class="tp-swselect form-control">
-                            <option>无</option>
-                            <option>钻石</option>
-                            <option>黄金</option>
-                            <option>铁</option>
-                            <option>锁链</option>
-                            <option>皮革</option>
-                        </select>
-                    </div>
-                </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">删除线</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
             </div>
-            <div class="tp-eq panel panel-default">
-                <div class="panel-heading">武器</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>主手</label>
-                        <select class="tp-swselect form-control">
-                            <option>无</option>
-                            <option>钻石剑</option>
-                            <option>金剑</option>
-                            <option>铁剑</option>
-                            <option>石剑</option>
-                            <option>木剑</option>
-                            <option>钻石镐</option>
-                            <option>金镐</option>
-                            <option>铁镐</option>
-                            <option>石镐</option>
-                            <option>木镐</option>
-                            <option>钻石锹</option>
-                            <option>金锹</option>
-                            <option>铁锹</option>
-                            <option>石锹</option>
-                            <option>木锹</option>
-                            <option>钻石斧</option>
-                            <option>金斧</option>
-                            <option>铁斧</option>
-                            <option>石斧</option>
-                            <option>木斧</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>副手</label>
-                        <select class="tp-swselect form-control">
-                            <option>无</option>
-                            <option>盾牌</option>
-                            <option>不死图腾</option>
-                            <option>光灵箭</option>
-                        </select>
-                    </div>
-                </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">乱码</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
             </div>
-            <div class="tp-forcreeper panel panel-default">
-                <div class="panel-heading">苦力怕专属</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>爆炸半径</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入爆炸半径">
-                    </div>
-                    <div class="form-group">
-                        <label>爆炸倒计时</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入爆炸倒计时">
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">闪电苦力怕</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">始终显示名称</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">属性</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>血量</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>跟踪范围</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>移动速度</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>击退抗性</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>攻击伤害</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>攻击击退</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                </div>
-            </div>
-            <div class="tp-eq panel panel-default">
-                <div class="panel-heading">装备掉落几率</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>主手掉落几率</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>副手掉落几率</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>头部盔甲掉落几率</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>上身盔甲掉落几率</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>护腿盔甲掉落几率</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                    <div class="form-group">
-                        <label>靴子盔甲掉落几率</label>
-                        <input type="text" class="form-control" id="name" placeholder="请输入">
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">其他</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">捡起装备</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch tp-peswitch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">破坏门</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon form-control-static">自动删除（当生物在玩家渲染距离外时是否被自动删除）</span>
-                            <span class="input-group-btn">
-                                <button class="tp-switch btn btn-default">关</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <button class="tp-build btn btn-primary btn-block">生成指令（还没做好）</button>
-            </div>
-            <span>结果</span>
-            <pre class="tp-result"></pre>
+          </div>
         </div>
+      </div>
+      <div class="tp-eq panel panel-default">
+        <div class="panel-heading">装备</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>头部</label>
+            <select class="form-control">
+              <option>无</option>
+              <option>下界合金</option>
+              <option>钻石</option>
+              <option>黄金</option>
+              <option>铁</option>
+              <option>锁链</option>
+              <option>皮革</option>
+              <option>南瓜</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>身体</label>
+            <select class="form-control">
+              <option>无</option>
+              <option>下界合金</option>
+              <option>钻石</option>
+              <option>黄金</option>
+              <option>铁</option>
+              <option>锁链</option>
+              <option>皮革</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>护腿</label>
+            <select class="form-control">
+              <option>无</option>
+              <option>下界合金</option>
+              <option>钻石</option>
+              <option>黄金</option>
+              <option>铁</option>
+              <option>锁链</option>
+              <option>皮革</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>靴子</label>
+            <select class="form-control">
+              <option>无</option>
+              <option>下界合金</option>
+              <option>钻石</option>
+              <option>黄金</option>
+              <option>铁</option>
+              <option>锁链</option>
+              <option>皮革</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="tp-eq panel panel-default">
+        <div class="panel-heading">武器</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>主手</label>
+            <select class="form-control">
+              <option>无</option>
+              <option>下界合金剑</option>
+              <option>钻石剑</option>
+              <option>金剑</option>
+              <option>铁剑</option>
+              <option>石剑</option>
+              <option>木剑</option>
+              <option>下界合金镐</option>
+              <option>钻石镐</option>
+              <option>金镐</option>
+              <option>铁镐</option>
+              <option>石镐</option>
+              <option>木镐</option>
+              <option>下界合金锄</option>
+              <option>钻石锄</option>
+              <option>金锄</option>
+              <option>铁锄</option>
+              <option>石锄</option>
+              <option>木锄</option>
+              <option>下界合金锹</option>
+              <option>钻石锹</option>
+              <option>金锹</option>
+              <option>铁锹</option>
+              <option>石锹</option>
+              <option>木锹</option>
+              <option>下界合金斧</option>
+              <option>钻石斧</option>
+              <option>金斧</option>
+              <option>铁斧</option>
+              <option>石斧</option>
+              <option>木斧</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>副手</label>
+            <select class="form-control">
+              <option>无</option>
+              <option>盾牌</option>
+              <option>不死图腾</option>
+              <option>光灵箭</option>
+              <option>下界合金剑</option>
+              <option>钻石剑</option>
+              <option>金剑</option>
+              <option>铁剑</option>
+              <option>石剑</option>
+              <option>木剑</option>
+              <option>下界合金镐</option>
+              <option>钻石镐</option>
+              <option>金镐</option>
+              <option>铁镐</option>
+              <option>石镐</option>
+              <option>木镐</option>
+              <option>下界合金锄</option>
+              <option>钻石锄</option>
+              <option>金锄</option>
+              <option>铁锄</option>
+              <option>石锄</option>
+              <option>木锄</option>
+              <option>下界合金锹</option>
+              <option>钻石锹</option>
+              <option>金锹</option>
+              <option>铁锹</option>
+              <option>石锹</option>
+              <option>木锹</option>
+              <option>下界合金斧</option>
+              <option>钻石斧</option>
+              <option>金斧</option>
+              <option>铁斧</option>
+              <option>石斧</option>
+              <option>木斧</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="tp-forcreeper panel panel-default">
+        <div class="panel-heading">苦力怕专属</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>爆炸半径</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入爆炸半径">
+          </div>
+          <div class="form-group">
+            <label>爆炸倒计时</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入爆炸倒计时">
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">闪电苦力怕</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tp-forslime panel panel-default">
+        <div class="panel-heading">史莱姆专属</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>尺寸</label>
+            <select class="tp-sizeselect form-control">
+              <option>大</option>
+              <option>中</option>
+              <option>小</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">属性</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>血量</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>跟踪范围</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>移动速度</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>击退抗性</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>攻击伤害</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>攻击击退</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+        </div>
+      </div>
+      <div class="tp-eq panel panel-default">
+        <div class="panel-heading">装备掉落几率</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>主手掉落几率</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>副手掉落几率</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>头部盔甲掉落几率</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>上身盔甲掉落几率</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>护腿盔甲掉落几率</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+          <div class="form-group">
+            <label>靴子盔甲掉落几率</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">其他</div>
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">捡起装备</span>
+              <span class="input-group-btn">
+                <button class="tp-switch tp-peswitch btn btn-default">关</button>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">破坏门</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">自动删除（当生物在玩家渲染距离外时是否被自动删除）</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button class="tp-build btn btn-primary btn-block">生成指令（还没做好）</button>
+      </div>
+      <span>结果</span>
+      <pre class="tp-result"></pre>
     </div>
+  </div>
 </body>
+
 </html>
-
-
