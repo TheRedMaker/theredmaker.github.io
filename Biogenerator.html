@@ -21,6 +21,13 @@
           $this.toggleClass("btn-success");
           $this.is(".btn-success") ? $this.html("开") : $this.html("关");
           $this.parent().parent().parent().fadeTo(100, 1);
+          if ($(".tp-inexswitch").html() == "开") {
+            $(".tp-explosion-countdown").attr("disabled","");
+            $(".tp-explosion-countdown").prev().addClass("text-muted");
+          } else {
+            $(".tp-explosion-countdown").removeAttr("disabled");
+            $(".tp-explosion-countdown").prev().removeClass("text-muted");
+          };
         });
       });
 
@@ -328,7 +335,15 @@
           </div>
           <div class="form-group">
             <label>爆炸倒计时</label>
-            <input type="text" class="form-control" id="name" placeholder="请输入爆炸倒计时">
+            <input type="text" class="tp-explosion-countdown form-control" id="name" placeholder="请输入爆炸倒计时">
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">瞬间爆炸（开启后禁用爆炸倒计时）</span>
+              <span class="input-group-btn">
+                <button class="tp-inexswitch tp-switch btn btn-default">关</button>
+              </span>
+            </div>
           </div>
           <div class="form-group">
             <div class="input-group">
