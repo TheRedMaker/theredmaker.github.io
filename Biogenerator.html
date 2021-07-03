@@ -19,12 +19,238 @@
           $(elem).slideUp(200);
         });
       };
+      const JSON_HEX_QUOT = 8;
+      const JSON_HEX_TAG = 1;
+      const JSON_HEX_AMP = 2;
+      const JSON_HEX_APOS = 4;
+      const JSON_NUMERIC_CHECK = 32;
+      const JSON_UNESCAPED_SLASHES = 64;
+      const JSON_UNESCAPED_UNICODE = 256;
+      const JSON_FORCE_OBJECT = 16;
+      function json_encode(val, options = 0) {
+        var gettype = Object.prototype.toString;
+        switch (gettype.call(val)) {
+          case '[object String]':
+            return json_escape_string(val, options);
+            break;
+          case '[object Number]':
+            if (val % 1 === 0) {
+              return val;
+            } else {
+              return isFinite(val) ? val : 0;
+            }
+            break;
+          case '[object Boolean]':
+            return val ? true : false;
+            break;
+          case '[object Undefined]':
+            return null;
+            break;
+          case '[object Null]':
+            return null;
+            break;
+          case '[object Object]':
+            return json_encode_array(val, options);
+            break;
+          case '[object Array]':
+            return json_encode_array(val, options);
+            break;
+          case '[object Function]':
+            return null;
+            break;
+          default:
+            return null;
+            break;
+        }
+
+      }
+
+      function json_escape_string(val, options) {
+        var pos = 0;
+        var len = val.length;
+        if (len == 0) {
+          return '""';
+        }
+        if (options & JSON_NUMERIC_CHECK) {
+          if (!isNaN(parseInt(val))) {
+            if (val % 1 === 0) {
+              return val;
+            } else {
+              return isFinite(val) ? val : 0;
+            }
+          }
+        }
+        if (len == null) {
+          return null;
+        } else if (len == 0) {
+          return '""';
+        }
+        var result = '"';
+        while (pos < len) {
+          us = val.charAt(pos);
+          switch (us) {
+            case '"':
+              if (options & JSON_HEX_QUOT) {
+                result += "\\u0022";
+              } else {
+                result += "\\\"";
+              }
+              break;
+            case '\\':
+              result += "\\\\";
+              break;
+            case '/':
+              if (options & JSON_UNESCAPED_SLASHES) {
+                result += us;
+              } else {
+                result += "\\/";
+              }
+              break;
+            case '\b':
+              result += "\\b";
+              break;
+
+            case '\f':
+              result += "\\f";
+              break;
+
+            case '\n':
+              result += "\\n";
+              break;
+
+            case '\r':
+              result += "\\r";
+              break;
+
+            case '\t':
+              result += "\\t";
+              break;
+
+            case '<':
+              if (options & JSON_HEX_TAG) {
+                result += "\\u003C";
+              } else {
+                result += '<';
+              }
+              break;
+
+            case '>':
+              if (options & JSON_HEX_TAG) {
+                result += "\\u003E";
+              } else {
+                result += '>';
+              }
+              break;
+
+            case '&':
+              if (options & JSON_HEX_AMP) {
+                result += "\\u0026";
+              } else {
+                result += '&';
+              }
+              break;
+
+            case '\'':
+              if (options & JSON_HEX_APOS) {
+                result += "\\u0027";
+              } else {
+                result += '\'';
+              }
+              break;
+
+            default:
+              if ((us >= ' ' && (us & 127) == us) || IsDigit(us) || IsAlpha(us) || (options & JSON_UNESCAPED_UNICODE)) {
+                result += us;
+              } else {
+                result += "\\u" + parseInt(us.charCodeAt(0), 10).toString(16).padStart(4, '0');
+              }
+              break;
+          }
+          pos++;
+        }
+        result += '"';
+        return result;
+
+      }
+
+      function IsDigit(cCheck) { return (('0' <= cCheck) && (cCheck <= '9')); }
+
+      function IsAlpha(cCheck) { return ((('a' <= cCheck) && (cCheck <= 'z')) || (('A' <= cCheck) && (cCheck <= 'Z'))) }
+
+      function is_index_array(val, options) {
+        if (options & JSON_FORCE_OBJECT) {
+          return false;
+        }
+        var index = 0;
+        for (var item in val) {
+          if (item == index) {
+            index++;
+          } else {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function json_encode_array(val, options) {
+        if (!is_index_array(val, options)) {
+          var result = '{';
+        } else {
+          var result = '[';
+        }
+        if (!is_index_array(val, options)) {
+          for (var item in val) {
+            result += json_encode(item, options) + ':' + json_encode(val[item], options);
+            result += ',';
+          }
+        } else {
+          for (var item in val) {
+            result += json_encode(val[item]);
+            result += ',';
+          }
+        }
+        if (result.length > 1) {
+          result = result.substring(0, result.length - 1)
+        }
+        if (!is_index_array(val, options)) {
+          result += '}';
+        } else {
+          result += ']';
+        }
+        return result;
+      };
+
+      function change_to_float(val) {
+        if ((val / 1).toString().includes(".")) {
+          return (val / 1);
+        } else {
+          return (val / 1).toFixed(1);
+        };
+      };
+
+      function highlight_code(text, type) {
+        if (type == "key") {
+          return `<span style="color:aqua">${text}</span>`
+        } else if (type == "str") {
+          return `<span style="color:rgb(84,351,84)">${text}</span>`
+        } else if (type == "num") {
+          return `<span style="color:orange">${text}</span>`
+        } else if (type == "bool") {
+          return `<span style="color:yellow">${text}</span>`
+        } else if (type == "unit") {
+          return `<span style="color:red">${text}</span>`
+        };
+
+      }
+
+      $("body").removeClass("hide")
+      $(".tp-warnof-numberonly").hide();
       $(".tp-content")
-        .removeClass("hide")
         .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
         .animate({ "opacity": "1", "left": "0" }, 1000, function () {
           $(".tp-content").css({ "position": "static" });
         });
+
       $(".tp-switch").click(function () {
         $this = $(this);
         $this.parent().parent().parent().fadeTo(100, 0, function () {
@@ -76,10 +302,48 @@
         };
       });
       $(".tp-swselect").change();
+
+      var pageX = pageY = 0;
+      $("body").mousemove(function (event) {
+        pageX = event.pageX;
+        pageY = event.pageY;
+      });
+
+      $(".tp-numberonly").change(function () {
+        if ($(this).val()) {
+          if (isNaN(parseFloat($(this).val()))) {
+            $(".tp-warnof-numberonly").css({
+              "left": pageX - 10,
+              "top": pageY - 10,
+            })
+            $(".tp-warnof-numberonly").fadeIn(200, function () {
+              setTimeout(function () {
+                $(".tp-warnof-numberonly").fadeOut(100);
+              }, 200)
+            });
+            $(this).val("");
+          } else {
+            $(this).val(parseFloat($(this).val()));
+          };
+        };
+
+      });
+
       $(".tp-build").click(function () {
         var swlst = {
           "僵尸": "zombie",
-
+          "溺尸": "drowned",
+          "尸壳": "husk",
+          "僵尸猪灵": "zombified_piglin",
+          "猪灵": "piglin",
+          "猪灵蛮兵": "piglin_brute",
+          "骷髅": "skeleton",
+          "流浪者": "stray",
+          "凋零骷髅": "wither_skeleton",
+          "苦力怕": "creeper",
+          "史莱姆": "slime",
+          "岩浆史莱姆": "magma_cube",
+          "恶魂": "ghast",
         };
         var colorlst = {
           "默认": "",
@@ -99,30 +363,123 @@
           "深红色": "dark_red",
           "深紫色": "dark_purple",
           "金色": "gold",
+          "非常默认": "reset",
         };
         var swnm = swlst[$(".tp-swselect").val()];
-        var pe = ($(".tp-peswitch").html() == "开") ? "true" : "false";
-        var nbtdict = {};
+        var nbt_root = [];
+
+        // nbt name
         if ($(".tp-name").val()) {
           var CustomNameJSON = {};
-          CustomNameJSON.text = $(".tp-name").val();
+          CustomNameJSON.text = json_encode($(".tp-name").val()).slice(1, -1);
           CustomNameJSON.color = ($(".tp-colorhexswitch").html() == "开") ? `#${$(".tp-colorhex").val()}` : colorlst[$(".tp-namecolor").val()];
-          CustomNameJSON.color = ($(".tp-CustomNameVisible").html() == "开") ? true : false;
-          nbtdict.CustomName = JSON.stringify(CustomNameJSON);
-
+          CustomNameJSON.bold = ($(".tp-namebold").html() == "开") ? true : false;
+          CustomNameJSON.italic = ($(".tp-nameitalic").html() == "开") ? true : false;
+          CustomNameJSON.underlined = ($(".tp-underlined").html() == "开") ? true : false;
+          CustomNameJSON.strikethrough = ($(".tp-namestrikethrough").html() == "开") ? true : false;
+          CustomNameJSON.obfuscated = ($(".tp-nameobfuscated").html() == "开") ? true : false;
+          nbt_root.push(`${highlight_code("CustomName", "key")}: '${highlight_code(JSON.stringify(CustomNameJSON), "str")}'`);
         };
-        nbtdict.CustomNameVisible = ($(".tp-CustomNameVisible").html() == "开") ? true : false;
-        var resultstr = `summon minecraft:${swnm} ~ ~1 ~ ${JSON.stringify(nbtdict)}`
+        if ($(".tp-CustomNameVisible").html() == "开") {
+          nbt_root.push(`${highlight_code("CustomNameVisible", "key")}: ${highlight_code("true", "bool")}`);
+        };
+
+        // nbt attributes
+        var nbt_attributes = [];
+        if ($(".tp-max-health").val()) {
+          nbt_root.push(`${highlight_code("Health", "key")}: ${highlight_code(change_to_float($(".tp-max-health").val()), "num")}${highlight_code("f", "unit")}`);
+          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.max_health"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-max-health").val()), "num")}${highlight_code("d", "unit")}}`);
+        };
+        if ($(".tp-follow-range").val()) {
+          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.follow_range"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-follow-range").val()), "num")}${highlight_code("d", "unit")}}`);
+        };
+        if ($(".tp-movement-speed").val()) {
+          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.movement_speed"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-movement-speed").val()), "num")}${highlight_code("d", "unit")}}`);
+        };
+        if ($(".tp-knockback-resistance").val()) {
+          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.knockback_resistance"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-knockback-resistance").val()), "num")}${highlight_code("d", "unit")}}`);
+        };
+        if ($(".tp-attack-damage").val()) {
+          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.attack_damage"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-attack-damage").val()), "num")}${highlight_code("d", "unit")}}`);
+        };
+        if ($(".tp-attack-knockback").val()) {
+          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.attack_knockback"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-attack-knockback").val()), "num")}${highlight_code("d", "unit")}}`);
+        };
+        if (nbt_attributes.length > 0) {
+          nbt_root.push(`${highlight_code("Attributes", "key")}: [${nbt_attributes.join(", ")}]`);
+        };
+
+        // nbt ArmorItems
+        var nbt_ArmorItems = [];
+        var has_armor = 0;
+        var material_name = {
+          "皮革": "leather",
+          "铁": "iron",
+          "黄金": "golden",
+          "钻石": "diamond",
+          "锁链": "chainmail",
+          "下界合金": "netherite",
+        };
+        if ($(".tp-armor-boots").val() == "无") {
+          nbt_ArmorItems.push("{}");
+        } else {
+          has_armor += 1;
+          nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-boots").val()]}_boots"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
+        };
+        if ($(".tp-armor-leggings").val() == "无") {
+          nbt_ArmorItems.push("{}");
+        } else {
+          has_armor += 1;
+          nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-leggings").val()]}_leggings"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
+        };
+        if ($(".tp-armor-chestplate").val() == "无") {
+          nbt_ArmorItems.push("{}");
+        } else {
+          has_armor += 1;
+          nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-chestplate").val()]}_chestplate"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
+        };
+        if ($(".tp-armor-helmet").val() == "无") {
+          nbt_ArmorItems.push("{}");
+        } else {
+          has_armor += 1;
+          if ($(".tp-armor-helmet").val() == "南瓜") {
+            nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:carved_pumpkin"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
+          } else {
+            nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-helmet").val()]}_helmet"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
+          };
+        };
+        if (has_armor>0){
+          nbt_root.push(`${highlight_code("ArmorItems", "key")}: [${nbt_ArmorItems.join(", ")}]`);
+        }
+        var resultstr = `summon minecraft:${swnm} ~ ~1 ~ {${nbt_root.join(", ")}}`;
         $(".tp-result").fadeOut(100, function () {
           $(".tp-result").html(resultstr).slideDown(100);
         });
       });
     });
   </script>
+  <style>
+    @font-face {
+      font-family: minecraft;
+      src: url('https://myworldzycpc.github.io/files/minecraft.ttf');
+    }
+
+    .tp-result {
+      white-space: pre-wrap;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      text-shadow: 6px 6px rgba(0, 0, 0, 0.5);
+      font-family: minecraft;
+      font-size: 36px;
+    }
+  </style>
 </head>
 
-<body>
-  <div class="tp-content hide">
+<body class="hide">
+  <button class="tp-warnof-numberonly btn btn-danger" style="position: absolute; left: 0px; top: 0px" disabled>
+    只能输入数字
+  </button>
+  <div class="tp-content">
     <div class="container">
       <br />
       <div class="jumbotron">
@@ -182,6 +539,7 @@
               <option>深红色</option>
               <option>深紫色</option>
               <option>金色</option>
+              <option>非常默认</option>
             </select>
           </div>
           <div class="form-group">
@@ -211,7 +569,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">斜体</span>
               <span class="input-group-btn">
-                <button class="tp-namebold tp-switch btn btn-default">关</button>
+                <button class="tp-nameitalic tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -219,7 +577,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">下划线</span>
               <span class="input-group-btn">
-                <button class="tp-namebold tp-switch btn btn-default">关</button>
+                <button class="tp-nameunderlined tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -227,7 +585,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">删除线</span>
               <span class="input-group-btn">
-                <button class="tp-namebold tp-switch btn btn-default">关</button>
+                <button class="tp-namestrikethrough tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -235,7 +593,7 @@
             <div class="input-group">
               <span class="input-group-addon form-control-static">乱码</span>
               <span class="input-group-btn">
-                <button class="tp-namebold tp-switch btn btn-default">关</button>
+                <button class="tp-nameobfuscated tp-switch btn btn-default">关</button>
               </span>
             </div>
           </div>
@@ -255,7 +613,7 @@
         <div class="panel-body">
           <div class="form-group">
             <label>头部</label>
-            <select class="form-control">
+            <select class="tp-armor-helmet form-control">
               <option>无</option>
               <option>下界合金</option>
               <option>钻石</option>
@@ -268,7 +626,7 @@
           </div>
           <div class="form-group">
             <label>身体</label>
-            <select class="form-control">
+            <select class="tp-armor-chestplate form-control">
               <option>无</option>
               <option>下界合金</option>
               <option>钻石</option>
@@ -280,7 +638,7 @@
           </div>
           <div class="form-group">
             <label>护腿</label>
-            <select class="form-control">
+            <select class="tp-armor-leggings form-control">
               <option>无</option>
               <option>下界合金</option>
               <option>钻石</option>
@@ -292,7 +650,7 @@
           </div>
           <div class="form-group">
             <label>靴子</label>
-            <select class="form-control">
+            <select class="tp-armor-boots form-control">
               <option>无</option>
               <option>下界合金</option>
               <option>钻石</option>
@@ -436,27 +794,29 @@
         <div class="panel-body">
           <div class="form-group">
             <label>血量</label>
-            <input type="text" class="form-control" placeholder="请输入">
+            <input type="text" class="tp-max-health tp-numberonly form-control" placeholder="请输入血量（2血量=1颗心）">
           </div>
           <div class="form-group">
             <label>跟踪范围</label>
-            <input type="text" class="form-control" placeholder="请输入">
+            <input type="text" class="tp-follow-range tp-numberonly form-control" placeholder="请输入跟踪范围（格）">
           </div>
           <div class="form-group">
             <label>移动速度</label>
-            <input type="text" class="form-control" placeholder="请输入">
+            <input type="text" class="tp-movement-speed tp-numberonly form-control"
+              placeholder="请输入移动速度（僵尸0.23，猪灵0.34，骷髅0.25，数字越大越快，对恶魂无效）">
           </div>
           <div class="form-group">
             <label>击退抗性</label>
-            <input type="text" class="form-control" placeholder="请输入">
+            <input type="text" class="tp-knockback-resistance tp-numberonly form-control"
+              placeholder="请输入击退抗性（0.0~1.0，1是无击退）">
           </div>
           <div class="form-group">
             <label>攻击伤害</label>
-            <input type="text" class="form-control" placeholder="请输入">
+            <input type="text" class="tp-attack-damage tp-numberonly form-control" placeholder="请输入攻击伤害">
           </div>
           <div class="form-group">
             <label>攻击击退</label>
-            <input type="text" class="form-control" placeholder="请输入">
+            <input type="text" class="tp-attack-knockback tp-numberonly form-control" placeholder="请输入攻击击退">
           </div>
         </div>
       </div>
@@ -516,14 +876,24 @@
               </span>
             </div>
           </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon form-control-static">保持沉默</span>
+              <span class="input-group-btn">
+                <button class="tp-switch btn btn-default">关</button>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="form-group">
         <button class="tp-build btn btn-primary btn-block">生成指令（还没做好）</button>
       </div>
-      <span>结果</span>
-      <pre class="tp-result"></pre>
+      <span>结果（连点三下可以全部选中，然后按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 复制）</span>
+      <div class="well" style="background-image: url(static/mywzy_and_trm.png); background-size: cover;">
+        <pre class="tp-result"></pre>
+      </div>
     </div>
   </div>
 </body>
