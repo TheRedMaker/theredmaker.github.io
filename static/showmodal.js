@@ -37,8 +37,10 @@ showModal.show = function (heading = "", content = "", btntext, btncmd) {
         $(".tp-modal-btn").show();
         $(".tp-modal-btn").html(btntext);
         if (btncmd) {
-            $(".tp-modal-btn").click(btncmd)
-        }
+            $(".tp-modal-btn").click(btncmd);
+        } else {
+            $(".tp-modal-btn").click(function () { });
+        };
     } else {
         $(".tp-modal-btn").hide()
     };
