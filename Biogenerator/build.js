@@ -272,7 +272,7 @@ function buildfunc() {
     }
 
     var resultstr = `summon minecraft:${swnm} ~ ~1 ~ ${nbt_root.text(true)}`;
-    $(".tp-result").fadeOut(100, function () {
-        $(".tp-result").html(resultstr).slideDown(100);
+    $(".tp-result").fadeOut(200, function () {
+        $(".tp-result").html(resultstr).slideDown(500);
     });
 }
