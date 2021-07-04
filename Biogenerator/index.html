@@ -5,474 +5,15 @@
   <meta charset="utf-8" />
   <title>Minecraft生物生成器</title>
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="main.css" />
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script>
-    $(function () {
-      function tpshow(elem) {
-        $(`${elem}:hidden`).slideDown(200, function () {
-          $(elem).fadeTo(200, 1);
-        });
-      };
-      function tphide(elem) {
-        $(`${elem}:visible`).fadeTo(200, 0, function () {
-          $(elem).slideUp(200);
-        });
-      };
-      const JSON_HEX_QUOT = 8;
-      const JSON_HEX_TAG = 1;
-      const JSON_HEX_AMP = 2;
-      const JSON_HEX_APOS = 4;
-      const JSON_NUMERIC_CHECK = 32;
-      const JSON_UNESCAPED_SLASHES = 64;
-      const JSON_UNESCAPED_UNICODE = 256;
-      const JSON_FORCE_OBJECT = 16;
-      function json_encode(val, options = 0) {
-        var gettype = Object.prototype.toString;
-        switch (gettype.call(val)) {
-          case '[object String]':
-            return json_escape_string(val, options);
-            break;
-          case '[object Number]':
-            if (val % 1 === 0) {
-              return val;
-            } else {
-              return isFinite(val) ? val : 0;
-            }
-            break;
-          case '[object Boolean]':
-            return val ? true : false;
-            break;
-          case '[object Undefined]':
-            return null;
-            break;
-          case '[object Null]':
-            return null;
-            break;
-          case '[object Object]':
-            return json_encode_array(val, options);
-            break;
-          case '[object Array]':
-            return json_encode_array(val, options);
-            break;
-          case '[object Function]':
-            return null;
-            break;
-          default:
-            return null;
-            break;
-        }
+  <script src="json_encode.js"></script>
+  <script src="functions.js"></script>
+  <script src="nbtcoder.js"></script>
+  <script src="build.js"></script>
+  <script src="main.js"></script>
 
-      }
-
-      function json_escape_string(val, options) {
-        var pos = 0;
-        var len = val.length;
-        if (len == 0) {
-          return '""';
-        }
-        if (options & JSON_NUMERIC_CHECK) {
-          if (!isNaN(parseInt(val))) {
-            if (val % 1 === 0) {
-              return val;
-            } else {
-              return isFinite(val) ? val : 0;
-            }
-          }
-        }
-        if (len == null) {
-          return null;
-        } else if (len == 0) {
-          return '""';
-        }
-        var result = '"';
-        while (pos < len) {
-          us = val.charAt(pos);
-          switch (us) {
-            case '"':
-              if (options & JSON_HEX_QUOT) {
-                result += "\\u0022";
-              } else {
-                result += "\\\"";
-              }
-              break;
-            case '\\':
-              result += "\\\\";
-              break;
-            case '/':
-              if (options & JSON_UNESCAPED_SLASHES) {
-                result += us;
-              } else {
-                result += "\\/";
-              }
-              break;
-            case '\b':
-              result += "\\b";
-              break;
-
-            case '\f':
-              result += "\\f";
-              break;
-
-            case '\n':
-              result += "\\n";
-              break;
-
-            case '\r':
-              result += "\\r";
-              break;
-
-            case '\t':
-              result += "\\t";
-              break;
-
-            case '<':
-              if (options & JSON_HEX_TAG) {
-                result += "\\u003C";
-              } else {
-                result += '<';
-              }
-              break;
-
-            case '>':
-              if (options & JSON_HEX_TAG) {
-                result += "\\u003E";
-              } else {
-                result += '>';
-              }
-              break;
-
-            case '&':
-              if (options & JSON_HEX_AMP) {
-                result += "\\u0026";
-              } else {
-                result += '&';
-              }
-              break;
-
-            case '\'':
-              if (options & JSON_HEX_APOS) {
-                result += "\\u0027";
-              } else {
-                result += '\'';
-              }
-              break;
-
-            default:
-              if ((us >= ' ' && (us & 127) == us) || IsDigit(us) || IsAlpha(us) || (options & JSON_UNESCAPED_UNICODE)) {
-                result += us;
-              } else {
-                result += "\\u" + parseInt(us.charCodeAt(0), 10).toString(16).padStart(4, '0');
-              }
-              break;
-          }
-          pos++;
-        }
-        result += '"';
-        return result;
-
-      }
-
-      function IsDigit(cCheck) { return (('0' <= cCheck) && (cCheck <= '9')); }
-
-      function IsAlpha(cCheck) { return ((('a' <= cCheck) && (cCheck <= 'z')) || (('A' <= cCheck) && (cCheck <= 'Z'))) }
-
-      function is_index_array(val, options) {
-        if (options & JSON_FORCE_OBJECT) {
-          return false;
-        }
-        var index = 0;
-        for (var item in val) {
-          if (item == index) {
-            index++;
-          } else {
-            return false;
-          }
-        }
-        return true;
-      }
-
-      function json_encode_array(val, options) {
-        if (!is_index_array(val, options)) {
-          var result = '{';
-        } else {
-          var result = '[';
-        }
-        if (!is_index_array(val, options)) {
-          for (var item in val) {
-            result += json_encode(item, options) + ':' + json_encode(val[item], options);
-            result += ',';
-          }
-        } else {
-          for (var item in val) {
-            result += json_encode(val[item]);
-            result += ',';
-          }
-        }
-        if (result.length > 1) {
-          result = result.substring(0, result.length - 1)
-        }
-        if (!is_index_array(val, options)) {
-          result += '}';
-        } else {
-          result += ']';
-        }
-        return result;
-      };
-
-      function change_to_float(val) {
-        if ((val / 1).toString().includes(".")) {
-          return (val / 1);
-        } else {
-          return (val / 1).toFixed(1);
-        };
-      };
-
-      function highlight_code(text, type) {
-        if (type == "key") {
-          return `<span style="color:aqua">${text}</span>`
-        } else if (type == "str") {
-          return `<span style="color:rgb(84,351,84)">${text}</span>`
-        } else if (type == "num") {
-          return `<span style="color:orange">${text}</span>`
-        } else if (type == "bool") {
-          return `<span style="color:yellow">${text}</span>`
-        } else if (type == "unit") {
-          return `<span style="color:red">${text}</span>`
-        };
-
-      }
-
-      $("body").removeClass("hide")
-      $(".tp-warnof-numberonly").hide();
-      $(".tp-content")
-        .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
-        .animate({ "opacity": "1", "left": "0" }, 1000, function () {
-          $(".tp-content").css({ "position": "static" });
-        });
-
-      $(".tp-switch").click(function () {
-        $this = $(this);
-        $this.parent().parent().parent().fadeTo(100, 0, function () {
-          $this.toggleClass("btn-success");
-          $this.is(".btn-success") ? $this.html("开") : $this.html("关");
-          $this.parent().parent().parent().fadeTo(100, 1);
-          if ($(".tp-inexswitch").html() == "开") {
-            $(".tp-explosion-countdown").attr("disabled", "");
-            $(".tp-explosion-countdown").prev().addClass("text-muted");
-          } else {
-            $(".tp-explosion-countdown").removeAttr("disabled");
-            $(".tp-explosion-countdown").prev().removeClass("text-muted");
-          };
-          if ($(".tp-colorhexswitch").html() == "开") {
-            $(".tp-namecolor").attr("disabled", "");
-            $(".tp-namecolor").parent().addClass("text-muted");
-            $(".tp-colorhex").removeAttr("disabled");
-            $(".tp-colorhex").parent().parent().removeClass("text-muted");
-          } else {
-            $(".tp-colorhex").attr("disabled", "");
-            $(".tp-colorhex").parent().parent().addClass("text-muted");
-            $(".tp-namecolor").removeAttr("disabled");
-            $(".tp-namecolor").parent().removeClass("text-muted");
-          };
-        });
-      });
-
-      $(".tp-swselect").change(function () {
-        if ($(".tp-swselect").val() == "苦力怕") {
-          tphide(".tp-eq");
-          tphide(".tp-forslime");
-          tphide(".tp-forghast");
-          tpshow(".tp-forcreeper");
-        } else if ($(".tp-swselect").val() == "史莱姆" || $(".tp-swselect").val() == "岩浆史莱姆") {
-          tphide(".tp-eq");
-          tpshow(".tp-forslime");
-          tphide(".tp-forghast");
-          tphide(".tp-forcreeper");
-        } else if ($(".tp-swselect").val() == "恶魂") {
-          tphide(".tp-eq");
-          tphide(".tp-forslime");
-          tpshow(".tp-forghast");
-          tphide(".tp-forcreeper");
-        } else {
-          tpshow(".tp-eq");
-          tphide(".tp-forslime");
-          tphide(".tp-forghast");
-          tphide(".tp-forcreeper");
-        };
-      });
-      $(".tp-swselect").change();
-
-      var pageX = pageY = 0;
-      $("body").mousemove(function (event) {
-        pageX = event.pageX;
-        pageY = event.pageY;
-      });
-
-      $(".tp-numberonly").change(function () {
-        if ($(this).val()) {
-          if (isNaN(parseFloat($(this).val()))) {
-            $(".tp-warnof-numberonly").css({
-              "left": pageX - 10,
-              "top": pageY - 10,
-            })
-            $(".tp-warnof-numberonly").fadeIn(200, function () {
-              setTimeout(function () {
-                $(".tp-warnof-numberonly").fadeOut(100);
-              }, 200)
-            });
-            $(this).val("");
-          } else {
-            $(this).val(parseFloat($(this).val()));
-          };
-        };
-
-      });
-
-      $(".tp-build").click(function () {
-        var swlst = {
-          "僵尸": "zombie",
-          "溺尸": "drowned",
-          "尸壳": "husk",
-          "僵尸猪灵": "zombified_piglin",
-          "猪灵": "piglin",
-          "猪灵蛮兵": "piglin_brute",
-          "骷髅": "skeleton",
-          "流浪者": "stray",
-          "凋零骷髅": "wither_skeleton",
-          "苦力怕": "creeper",
-          "史莱姆": "slime",
-          "岩浆史莱姆": "magma_cube",
-          "恶魂": "ghast",
-        };
-        var colorlst = {
-          "默认": "",
-          "白色": "white",
-          "黑色": "black",
-          "红色": "red",
-          "绿色": "green",
-          "黄色": "yellow",
-          "蓝色": "blue",
-          "橙色": "orange",
-          "青色": "aqua",
-          "紫色": "purple",
-          "灰色": "grey",
-          "深蓝色": "dark_blue",
-          "深绿色": "dark_green",
-          "深青色": "dark_aqua",
-          "深红色": "dark_red",
-          "深紫色": "dark_purple",
-          "金色": "gold",
-          "非常默认": "reset",
-        };
-        var swnm = swlst[$(".tp-swselect").val()];
-        var nbt_root = [];
-
-        // nbt name
-        if ($(".tp-name").val()) {
-          var CustomNameJSON = {};
-          CustomNameJSON.text = json_encode($(".tp-name").val()).slice(1, -1);
-          CustomNameJSON.color = ($(".tp-colorhexswitch").html() == "开") ? `#${$(".tp-colorhex").val()}` : colorlst[$(".tp-namecolor").val()];
-          CustomNameJSON.bold = ($(".tp-namebold").html() == "开") ? true : false;
-          CustomNameJSON.italic = ($(".tp-nameitalic").html() == "开") ? true : false;
-          CustomNameJSON.underlined = ($(".tp-underlined").html() == "开") ? true : false;
-          CustomNameJSON.strikethrough = ($(".tp-namestrikethrough").html() == "开") ? true : false;
-          CustomNameJSON.obfuscated = ($(".tp-nameobfuscated").html() == "开") ? true : false;
-          nbt_root.push(`${highlight_code("CustomName", "key")}: '${highlight_code(JSON.stringify(CustomNameJSON), "str")}'`);
-        };
-        if ($(".tp-CustomNameVisible").html() == "开") {
-          nbt_root.push(`${highlight_code("CustomNameVisible", "key")}: ${highlight_code("true", "bool")}`);
-        };
-
-        // nbt attributes
-        var nbt_attributes = [];
-        if ($(".tp-max-health").val()) {
-          nbt_root.push(`${highlight_code("Health", "key")}: ${highlight_code(change_to_float($(".tp-max-health").val()), "num")}${highlight_code("f", "unit")}`);
-          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.max_health"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-max-health").val()), "num")}${highlight_code("d", "unit")}}`);
-        };
-        if ($(".tp-follow-range").val()) {
-          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.follow_range"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-follow-range").val()), "num")}${highlight_code("d", "unit")}}`);
-        };
-        if ($(".tp-movement-speed").val()) {
-          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.movement_speed"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-movement-speed").val()), "num")}${highlight_code("d", "unit")}}`);
-        };
-        if ($(".tp-knockback-resistance").val()) {
-          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.knockback_resistance"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-knockback-resistance").val()), "num")}${highlight_code("d", "unit")}}`);
-        };
-        if ($(".tp-attack-damage").val()) {
-          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.attack_damage"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-attack-damage").val()), "num")}${highlight_code("d", "unit")}}`);
-        };
-        if ($(".tp-attack-knockback").val()) {
-          nbt_attributes.push(`{${highlight_code("Name", "key")}: ${highlight_code('"minecraft:generic.attack_knockback"', "str")}, ${highlight_code("Base", "key")}: ${highlight_code(change_to_float($(".tp-attack-knockback").val()), "num")}${highlight_code("d", "unit")}}`);
-        };
-        if (nbt_attributes.length > 0) {
-          nbt_root.push(`${highlight_code("Attributes", "key")}: [${nbt_attributes.join(", ")}]`);
-        };
-
-        // nbt ArmorItems
-        var nbt_ArmorItems = [];
-        var has_armor = 0;
-        var material_name = {
-          "皮革": "leather",
-          "铁": "iron",
-          "黄金": "golden",
-          "钻石": "diamond",
-          "锁链": "chainmail",
-          "下界合金": "netherite",
-        };
-        if ($(".tp-armor-boots").val() == "无") {
-          nbt_ArmorItems.push("{}");
-        } else {
-          has_armor += 1;
-          nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-boots").val()]}_boots"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
-        };
-        if ($(".tp-armor-leggings").val() == "无") {
-          nbt_ArmorItems.push("{}");
-        } else {
-          has_armor += 1;
-          nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-leggings").val()]}_leggings"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
-        };
-        if ($(".tp-armor-chestplate").val() == "无") {
-          nbt_ArmorItems.push("{}");
-        } else {
-          has_armor += 1;
-          nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-chestplate").val()]}_chestplate"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
-        };
-        if ($(".tp-armor-helmet").val() == "无") {
-          nbt_ArmorItems.push("{}");
-        } else {
-          has_armor += 1;
-          if ($(".tp-armor-helmet").val() == "南瓜") {
-            nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:carved_pumpkin"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
-          } else {
-            nbt_ArmorItems.push(`{${highlight_code("id", "key")}: ${highlight_code(`"minecraft:${material_name[$(".tp-armor-helmet").val()]}_helmet"`, "str")}, ${highlight_code("Count", "key")}: ${highlight_code("1", "num")}${highlight_code("b", "unit")}}`);
-          };
-        };
-        if (has_armor>0){
-          nbt_root.push(`${highlight_code("ArmorItems", "key")}: [${nbt_ArmorItems.join(", ")}]`);
-        }
-        var resultstr = `summon minecraft:${swnm} ~ ~1 ~ {${nbt_root.join(", ")}}`;
-        $(".tp-result").fadeOut(100, function () {
-          $(".tp-result").html(resultstr).slideDown(100);
-        });
-      });
-    });
-  </script>
-  <style>
-    @font-face {
-      font-family: minecraft;
-      src: url('https://myworldzycpc.github.io/files/minecraft.ttf');
-    }
-
-    .tp-result {
-      white-space: pre-wrap;
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      text-shadow: 6px 6px rgba(0, 0, 0, 0.5);
-      font-family: minecraft;
-      font-size: 36px;
-    }
-  </style>
 </head>
 
 <body class="hide">
@@ -613,52 +154,79 @@
         <div class="panel-body">
           <div class="form-group">
             <label>头部</label>
-            <select class="tp-armor-helmet form-control">
-              <option>无</option>
-              <option>下界合金</option>
-              <option>钻石</option>
-              <option>黄金</option>
-              <option>铁</option>
-              <option>锁链</option>
-              <option>皮革</option>
-              <option>南瓜</option>
-            </select>
+            <div class="input-group">
+              <select class="tp-armor-helmet form-control">
+                <option>无</option>
+                <option>下界合金</option>
+                <option>钻石</option>
+                <option>黄金</option>
+                <option>铁</option>
+                <option>锁链</option>
+                <option>皮革</option>
+                <option>南瓜</option>
+                <option>南瓜灯</option>
+                <option>玻璃</option>
+                <option>命令方块</option>
+              </select>
+              <span class="input-group-addon form-control-static">不可破坏</span>
+              <span class="input-group-btn">
+                <button class="tp-armor-helmet-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+              </span>
+            </div>
           </div>
           <div class="form-group">
             <label>身体</label>
-            <select class="tp-armor-chestplate form-control">
-              <option>无</option>
-              <option>下界合金</option>
-              <option>钻石</option>
-              <option>黄金</option>
-              <option>铁</option>
-              <option>锁链</option>
-              <option>皮革</option>
-            </select>
+            <div class="input-group">
+              <select class="tp-armor-chestplate form-control">
+                <option>无</option>
+                <option>下界合金</option>
+                <option>钻石</option>
+                <option>黄金</option>
+                <option>铁</option>
+                <option>锁链</option>
+                <option>皮革</option>
+              </select>
+              <span class="input-group-addon form-control-static">不可破坏</span>
+              <span class="input-group-btn">
+                <button class="tp-armor-chestplate-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+              </span>
+            </div>
           </div>
           <div class="form-group">
             <label>护腿</label>
-            <select class="tp-armor-leggings form-control">
-              <option>无</option>
-              <option>下界合金</option>
-              <option>钻石</option>
-              <option>黄金</option>
-              <option>铁</option>
-              <option>锁链</option>
-              <option>皮革</option>
-            </select>
+            <div class="input-group">
+              <select class="tp-armor-leggings form-control">
+                <option>无</option>
+                <option>下界合金</option>
+                <option>钻石</option>
+                <option>黄金</option>
+                <option>铁</option>
+                <option>锁链</option>
+                <option>皮革</option>
+              </select>
+              <span class="input-group-addon form-control-static">不可破坏</span>
+              <span class="input-group-btn">
+                <button class="tp-armor-leggings-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+              </span>
+            </div>
           </div>
           <div class="form-group">
             <label>靴子</label>
-            <select class="tp-armor-boots form-control">
-              <option>无</option>
-              <option>下界合金</option>
-              <option>钻石</option>
-              <option>黄金</option>
-              <option>铁</option>
-              <option>锁链</option>
-              <option>皮革</option>
-            </select>
+            <div class="input-group">
+              <select class="tp-armor-boots form-control">
+                <option>无</option>
+                <option>下界合金</option>
+                <option>钻石</option>
+                <option>黄金</option>
+                <option>铁</option>
+                <option>锁链</option>
+                <option>皮革</option>
+              </select>
+              <span class="input-group-addon form-control-static">不可破坏</span>
+              <span class="input-group-btn">
+                <button class="tp-armor-boots-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -667,78 +235,90 @@
         <div class="panel-body">
           <div class="form-group">
             <label>主手</label>
-            <select class="form-control">
-              <option>无</option>
-              <option>下界合金剑</option>
-              <option>钻石剑</option>
-              <option>金剑</option>
-              <option>铁剑</option>
-              <option>石剑</option>
-              <option>木剑</option>
-              <option>下界合金镐</option>
-              <option>钻石镐</option>
-              <option>金镐</option>
-              <option>铁镐</option>
-              <option>石镐</option>
-              <option>木镐</option>
-              <option>下界合金锄</option>
-              <option>钻石锄</option>
-              <option>金锄</option>
-              <option>铁锄</option>
-              <option>石锄</option>
-              <option>木锄</option>
-              <option>下界合金锹</option>
-              <option>钻石锹</option>
-              <option>金锹</option>
-              <option>铁锹</option>
-              <option>石锹</option>
-              <option>木锹</option>
-              <option>下界合金斧</option>
-              <option>钻石斧</option>
-              <option>金斧</option>
-              <option>铁斧</option>
-              <option>石斧</option>
-              <option>木斧</option>
-            </select>
+            <div class="input-group">
+              <select class="tp-mainhand form-control">
+                <option>无</option>
+                <option>下界合金剑</option>
+                <option>钻石剑</option>
+                <option>金剑</option>
+                <option>铁剑</option>
+                <option>石剑</option>
+                <option>木剑</option>
+                <option>下界合金镐</option>
+                <option>钻石镐</option>
+                <option>金镐</option>
+                <option>铁镐</option>
+                <option>石镐</option>
+                <option>木镐</option>
+                <option>下界合金锄</option>
+                <option>钻石锄</option>
+                <option>金锄</option>
+                <option>铁锄</option>
+                <option>石锄</option>
+                <option>木锄</option>
+                <option>下界合金锹</option>
+                <option>钻石锹</option>
+                <option>金锹</option>
+                <option>铁锹</option>
+                <option>石锹</option>
+                <option>木锹</option>
+                <option>下界合金斧</option>
+                <option>钻石斧</option>
+                <option>金斧</option>
+                <option>铁斧</option>
+                <option>石斧</option>
+                <option>木斧</option>
+              </select>
+              <span class="input-group-addon form-control-static">不可破坏</span>
+              <span class="input-group-btn">
+                <button class="tp-mainhand-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+              </span>
+            </div>
           </div>
           <div class="form-group">
             <label>副手</label>
-            <select class="form-control">
-              <option>无</option>
-              <option>盾牌</option>
-              <option>不死图腾</option>
-              <option>光灵箭</option>
-              <option>下界合金剑</option>
-              <option>钻石剑</option>
-              <option>金剑</option>
-              <option>铁剑</option>
-              <option>石剑</option>
-              <option>木剑</option>
-              <option>下界合金镐</option>
-              <option>钻石镐</option>
-              <option>金镐</option>
-              <option>铁镐</option>
-              <option>石镐</option>
-              <option>木镐</option>
-              <option>下界合金锄</option>
-              <option>钻石锄</option>
-              <option>金锄</option>
-              <option>铁锄</option>
-              <option>石锄</option>
-              <option>木锄</option>
-              <option>下界合金锹</option>
-              <option>钻石锹</option>
-              <option>金锹</option>
-              <option>铁锹</option>
-              <option>石锹</option>
-              <option>木锹</option>
-              <option>下界合金斧</option>
-              <option>钻石斧</option>
-              <option>金斧</option>
-              <option>铁斧</option>
-              <option>石斧</option>
-              <option>木斧</option>
-            </select>
+            <div class="input-group">
+              <select class="tp-minorhand form-control">
+                <option>无</option>
+                <option>盾牌</option>
+                <option>不死图腾</option>
+                <option>光灵箭</option>
+                <option>下界合金剑</option>
+                <option>钻石剑</option>
+                <option>金剑</option>
+                <option>铁剑</option>
+                <option>石剑</option>
+                <option>木剑</option>
+                <option>下界合金镐</option>
+                <option>钻石镐</option>
+                <option>金镐</option>
+                <option>铁镐</option>
+                <option>石镐</option>
+                <option>木镐</option>
+                <option>下界合金锄</option>
+                <option>钻石锄</option>
+                <option>金锄</option>
+                <option>铁锄</option>
+                <option>石锄</option>
+                <option>木锄</option>
+                <option>下界合金锹</option>
+                <option>钻石锹</option>
+                <option>金锹</option>
+                <option>铁锹</option>
+                <option>石锹</option>
+                <option>木锹</option>
+                <option>下界合金斧</option>
+                <option>钻石斧</option>
+                <option>金斧</option>
+                <option>铁斧</option>
+                <option>石斧</option>
+                <option>木斧</option>
+              </select>
+              <span class="input-group-addon form-control-static">不可破坏</span>
+              <span class="input-group-btn">
+                <button class="tp-minorhand-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -891,7 +471,7 @@
         <button class="tp-build btn btn-primary btn-block">生成指令（还没做好）</button>
       </div>
       <span>结果（连点三下可以全部选中，然后按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 复制）</span>
-      <div class="well" style="background-image: url(../static/mywzy_and_trm.png); background-size: cover;">
+      <div class="well" style="background-image: url(../static/mywzy_and_trm.png); background-size: cover;background-position: center center;">
         <pre class="tp-result"></pre>
       </div>
     </div>
