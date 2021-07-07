@@ -186,8 +186,12 @@ function b_others() {
         nbt_root.add_child("CanPickupLoot", new nbtBool(true));
     };
     if (["僵尸", "溺尸", "尸壳", "僵尸猪灵"].includes($(".tp-swselect").val())) {
-        nbt_root.add_child("CanBreakDoors", new nbtBool(($(".tp-CanBreakDoors").html() == "开")));
-        nbt_root.add_child("IsBaby", new nbtBool(($(".tp-IsBaby").html() == "开")));
+        if ($(".tp-CanBreakDoors").html() == "开") {
+            nbt_root.add_child("CanBreakDoors", new nbtBool(true));
+        }
+        if ($(".tp-IsBaby").html() == "开") {
+            nbt_root.add_child("IsBaby", new nbtBool(true));
+        }
     };
     if ($(".tp-PersistenceRequired").html() == "关") {
         nbt_root.add_child("PersistenceRequired", new nbtBool(true));
