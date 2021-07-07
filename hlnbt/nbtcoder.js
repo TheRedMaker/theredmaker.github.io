@@ -1,3 +1,13 @@
+gettype = Object.prototype.toString;
+
+function change_to_float(val) {
+    if ((val / 1).toString().includes(".")) {
+        return (val / 1);
+    } else {
+        return (val / 1).toFixed(1);
+    };
+};
+
 function highlight_code(text, type) {
     if (type == "key") {
         return `<span style="color:aqua">${text}</span>`
