@@ -3,6 +3,8 @@ function type(swnm) {
         return "creeper";
     } else if ((swnm == "slime") || (swnm == "magma_cube")) {
         return "slime";
+    } else if (swnm == "ghast") {
+        return "ghast";
     } else {
         return "eq";
     };
@@ -11,7 +13,7 @@ function type(swnm) {
 function b_name() {
     if ($(".tp-name").val()) {
         var CustomNameJSON = {};
-        CustomNameJSON.text = json_escape_string($(".tp-name").val());
+        CustomNameJSON.text = json_escape_string($(".tp-name").val(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS);
         CustomNameJSON.color = ($(".tp-colorhexswitch").html() == "开") ? `#${$(".tp-colorhex").val()}` : colorlst[$(".tp-namecolor").val()];
         CustomNameJSON.bold = ($(".tp-namebold").html() == "开") ? true : false;
         CustomNameJSON.italic = ($(".tp-nameitalic").html() == "开") ? true : false;
@@ -179,6 +181,100 @@ function b_HandItems() {
     }
 };
 
+function b_others() {
+    if (($(".tp-CanPickupLoot").html() == "开") && (swtype == "eq")) {
+        nbt_root.add_child("CanPickupLoot", new nbtBool(true));
+    };
+    if (["僵尸", "溺尸", "尸壳", "僵尸猪灵"].includes($(".tp-swselect").val())) {
+        nbt_root.add_child("CanBreakDoors", new nbtBool(($(".tp-CanBreakDoors").html() == "开")));
+        nbt_root.add_child("IsBaby", new nbtBool(($(".tp-IsBaby").html() == "开")));
+    };
+    if ($(".tp-PersistenceRequired").html() == "关") {
+        nbt_root.add_child("PersistenceRequired", new nbtBool(true));
+    };
+    if ($(".tp-Silent").html() == "开") {
+        nbt_root.add_child("Silent", new nbtBool(true));
+    };
+};
+
+function b_slime() {
+    if ($(".tp-size").val()) {
+        nbt_root.add_child("Size", new nbtNumber($(".tp-size").val()))
+    };
+};
+
+function b_creeper() {
+    if ($(".tp-ExplosionRadius").val()) {
+        nbt_root.add_child("ExplosionRadius", new nbtNumber($(".tp-ExplosionRadius").val(), "b"))
+    };
+    if ($(".tp-Fuse").val()) {
+        nbt_root.add_child("Fuse", new nbtNumber($(".tp-Fuse").val(), "s"))
+    };
+    if ($(".tp-ignited").html() == "开") {
+        nbt_root.add_child("ignited", new nbtBool(true));
+    };
+    if ($(".tp-power").html() == "开") {
+        nbt_root.add_child("power", new nbtBool(true));
+    };
+}
+
+function b_ghast() {
+    if ($(".tp-ExplosionPower").val()) {
+        nbt_root.add_child("ExplosionPower", new nbtNumber($(".tp-ExplosionPower").val(), "b"))
+    };
+}
+
+function b_chance() {
+    // hands
+    var nbt_HandDropChances = new nbtList;
+    var has_HandDropChances = 0;
+    if ($(".tp-HandDropChances-1").val()) {
+        has_HandDropChances += 1;
+        nbt_HandDropChances.add_child(new nbtNumber($(".tp-HandDropChances-1").val() / 100, "f"));
+    } else {
+        nbt_HandDropChances.add_child(new nbtNumber(0.085, "f"));
+    };
+    if ($(".tp-HandDropChances-2").val()) {
+        has_HandDropChances += 1;
+        nbt_HandDropChances.add_child(new nbtNumber($(".tp-HandDropChances-2").val() / 100, "f"));
+    } else {
+        nbt_HandDropChances.add_child(new nbtNumber(0.085, "f"));
+    };
+    if (has_HandDropChances > 0) {
+        nbt_root.add_child("HandDropChances", nbt_HandDropChances);
+    }
+    // eq
+    var nbt_ArmorDropChances = new nbtList;
+    var has_ArmorDropChances = 0;
+    if ($(".tp-ArmorDropChances-b").val()) {
+        has_ArmorDropChances += 1;
+        nbt_ArmorDropChances.add_child(new nbtNumber($(".tp-ArmorDropChances-b").val() / 100, "f"));
+    } else {
+        nbt_ArmorDropChances.add_child(new nbtNumber(0.085, "f"));
+    };
+    if ($(".tp-ArmorDropChances-l").val()) {
+        has_ArmorDropChances += 1;
+        nbt_ArmorDropChances.add_child(new nbtNumber($(".tp-ArmorDropChances-l").val() / 100, "f"));
+    } else {
+        nbt_ArmorDropChances.add_child(new nbtNumber(0.085, "f"));
+    };
+    if ($(".tp-ArmorDropChances-c").val()) {
+        has_ArmorDropChances += 1;
+        nbt_ArmorDropChances.add_child(new nbtNumber($(".tp-ArmorDropChances-c").val() / 100, "f"));
+    } else {
+        nbt_ArmorDropChances.add_child(new nbtNumber(0.085, "f"));
+    };
+    if ($(".tp-ArmorDropChances-h").val()) {
+        has_ArmorDropChances += 1;
+        nbt_ArmorDropChances.add_child(new nbtNumber($(".tp-ArmorDropChances-h").val() / 100, "f"));
+    } else {
+        nbt_ArmorDropChances.add_child(new nbtNumber(0.085, "f"));
+    };
+    if (has_ArmorDropChances > 0) {
+        nbt_root.add_child("ArmorDropChances", nbt_ArmorDropChances);
+    }
+}
+
 function buildfunc() {
     var swlst = {
         "僵尸": "zombie",
@@ -253,11 +349,13 @@ function buildfunc() {
         "盾牌": "shield",
         "不死图腾": "totem_of_undying",
         "光灵箭": "spectral_arrow",
+        "弓": "bow",
+        "三叉戟": "trident"
     };
     swnm = swlst[$(".tp-swselect").val()];
     nbt_root = new nbtObject();
 
-    var swtype = type(swnm);
+    swtype = type(swnm);
 
     // nbt name
     b_name();
@@ -265,11 +363,21 @@ function buildfunc() {
     // nbt attributes
     b_attributes();
 
-    // nbt ArmorItems
+    // nbt ArmorItems and HandItems
     if (swtype == "eq") {
         b_ArmorItems();
-        b_HandItems()
-    }
+        b_HandItems();
+        b_chance();
+    } else if (swtype == "slime") {
+        b_slime();
+    } else if (swtype == "creeper") {
+        b_creeper();
+    } else if (swtype == "ghast") {
+        b_ghast();
+    };
+
+    // nbt others
+    b_others()
 
     var resultstr = `summon minecraft:${swnm} ~ ~1 ~ ${nbt_root.text(true)}`;
     $(".tp-result").fadeOut(200, function () {

@@ -1,3 +1,4 @@
+gettype = Object.prototype.toString;
 
 function highlight_code(text, type) {
     if (type == "key") {
@@ -16,19 +17,42 @@ function highlight_code(text, type) {
 
 class nbtObject {
     constructor(childsal) {
-        this.childs = [];
+        this.childs = {};
         this.add_child = function (key, value) {
-            var kv = new nbtKeyValue(key, value);
-            this.childs.push(kv);
+            this.childs[key] = value;
         };
         this.isempty = function () {
-            return (this.childs.length == 0 ? true : false);
+            return (Object.keys(this.childs).length == 0 ? true : false);
+        };
+        this.get = function () {
+            var args = Array.prototype.slice.call(arguments);
+            if (gettype.call(args[0]) == "[object Array]") {
+                args = args[0];
+            };
+            if (args.length == 1) {
+                return this.childs[args[0]];
+            } else if (args.length > 1) {
+                return this.childs[args[0]].get(args.slice(1));
+            } else {
+                return this;
+            };
+        };
+        this.set = function (index, value) {
+            if (["[object String]", "[object Number]"].includes(gettype.call(index))) {
+                this.childs[index] = value;
+            } else if (gettype.call(index) == "[object Array]") {
+                if (index.length == 1) {
+                    this.childs[index[0]] = value;
+                } else if (index.length > 1) {
+                    this.get(index.slice(0, -1)).set(index.slice(-1), value);
+                };
+            };
         };
         this.text = function (ispretty) {
             var tl = [];
-            for (var i = 0; i < this.childs.length; i++) {
-                tl.push(this.childs[i].text(ispretty));
-            }
+            for (var i in this.childs) {
+                tl.push(`${ispretty ? highlight_code(i, "key") : i}: ${this.childs[i].text(ispretty)}`);
+            };
             return `{${tl.join(", ")}}`;
         };
         if (childsal) {
@@ -48,6 +72,30 @@ class nbtList {
         this.isempty = function () {
             return (this.childs.length == 0 ? true : false);
         };
+        this.get = function () {
+            var args = Array.prototype.slice.call(arguments);
+            if (gettype.call(args[0]) == "[object Array]") {
+                args = args[0];
+            };
+            if (args.length == 1) {
+                return this.childs[args[0]];
+            } else if (args.length > 1) {
+                return this.childs[args[0]].get(args.slice(1));
+            } else {
+                return this;
+            };
+        };
+        this.set = function (index, value) {
+            if (["[object String]", "[object Number]"].includes(gettype.call(index))) {
+                this.childs[index] = value;
+            } else if (gettype.call(index) == "[object Array]") {
+                if (index.length == 1) {
+                    this.childs[index[0]] = value;
+                } else if (index.length > 1) {
+                    this.get(index.slice(0, -1)).set(index.slice(-1), value);
+                };
+            };
+        };
         this.text = function (ispretty) {
             var tl = [];
             for (var i = 0; i < this.childs.length; i++) {
@@ -63,33 +111,21 @@ class nbtList {
     };
 };
 
-class nbtKeyValue {
-    constructor(key, value) {
-        this.key = key;
-        this.value = value;
-        this.text = function (ispretty) {
-            if (ispretty) {
-                return `${highlight_code(this.key, "key")}: ${this.value.text(true)}`
-            } else {
-                return `${this.key}: ${this.value.text()}`
-            };
-        };
-    };
-};
-
 class nbtNumber {
     constructor(value, unit) {
-        if ((unit == "d") || (unit == "f")){
+        if (["d", "f"].includes(unit)) {
             this.value = change_to_float(value);
-        }else{
+        } else if (["i", "s", "b", ""].includes(unit)) {
+            this.value = Math.round(value);
+        } else {
             this.value = value;
         };
         this.unit = unit;
         this.text = function (ispretty) {
             if (ispretty) {
-                return `${highlight_code(this.value, "num")}${highlight_code(this.unit, "unit")}`
+                return `${highlight_code(this.value, "num")}${unit ? highlight_code(this.unit, "unit") : ""}`
             } else {
-                return `${this.value}${this.unit}`
+                return `${this.value}${unit ? this.unit : ""}`
             };
         };
     };
@@ -120,3 +156,32 @@ class nbtBool {
         };
     };
 };
+
+function decode_nbt_str(str) {
+    js_obj = eval("obj=" + str.replace(/([0123456789\.]+)([bfdis])?/g, 'new nbtNumber($1,"$2")'));
+    return change_obj(js_obj);
+}
+
+function change_obj(js_obj) {
+    if (gettype.call(js_obj) == "[object String]") {
+        return new nbtString(js_obj);
+    } else if (gettype.call(js_obj) == "[object Boolean]") {
+        return new nbtBool(js_obj);
+    } else if (gettype.call(js_obj) == "[object Object]") {
+        if (js_obj instanceof nbtNumber) {
+            return js_obj;
+        } else {
+            var a = new nbtObject();
+            for (var i in js_obj) {
+                a.add_child(i, change_obj(js_obj[i]))
+            }
+            return a;
+        }
+    } else if (gettype.call(js_obj) == "[object Array]") {
+        var a = new nbtList();
+        for (var i in js_obj) {
+            a.add_child(change_obj(js_obj[i]));
+        }
+        return a;
+    }
+}

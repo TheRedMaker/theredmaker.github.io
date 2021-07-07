@@ -3,11 +3,18 @@ $(function () {
 
     $("body").removeClass("hide")
     $(".tp-warnof-numberonly").hide();
-    $(".tp-content")
-        .css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
-        .animate({ "opacity": "1", "left": "0" }, 1000, function () {
-            $(".tp-content").css({ "position": "static" });
-        });
+    $(".tp-warnof-infinity").hide();
+    $(".tp-content").css({ "opacity": "0", "position": "fixed", "left": "50%", "width": "100%" })
+    $(".tp-cover").css({ "opacity": "0", "left": "-50%" }).animate({ "opacity": "1", "left": "0" }, 500, function () {
+        setTimeout(function () {
+            $(".tp-cover").fadeOut(200, function () {
+                $(".tp-content").animate({ "opacity": "1", "left": "0" }, 1000, function () {
+                    $(".tp-content").css({ "position": "static" });
+                });
+            });
+        }, 300);
+    });
+
 
     $(".tp-switch").click(function () {
         $this = $(this);
@@ -15,13 +22,6 @@ $(function () {
             $this.toggleClass("btn-success");
             $this.is(".btn-success") ? $this.html("开") : $this.html("关");
             $this.parent().parent().parent().fadeTo(100, 1);
-            if ($(".tp-inexswitch").html() == "开") {
-                $(".tp-explosion-countdown").attr("disabled", "");
-                $(".tp-explosion-countdown").prev().addClass("text-muted");
-            } else {
-                $(".tp-explosion-countdown").removeAttr("disabled");
-                $(".tp-explosion-countdown").prev().removeClass("text-muted");
-            };
             if ($(".tp-colorhexswitch").html() == "开") {
                 $(".tp-namecolor").attr("disabled", "");
                 $(".tp-namecolor").parent().addClass("text-muted");
@@ -62,6 +62,13 @@ $(function () {
             tphide(".tp-forghast");
             tphide(".tp-forcreeper");
         };
+        if (["僵尸", "溺尸", "尸壳", "僵尸猪灵"].includes($(".tp-swselect").val())) {
+            tpshow(".tp-CanBreakDoors-group");
+            tpshow(".tp-IsBaby-group");
+        } else {
+            tphide(".tp-CanBreakDoors-group");
+            tphide(".tp-IsBaby-group");
+        };
     });
     $(".tp-swselect").change();
 
@@ -84,6 +91,17 @@ $(function () {
                     }, 200)
                 });
                 $(this).val("");
+            } else if (!isFinite(parseFloat($(this).val()))) {
+                $(".tp-warnof-infinity").css({
+                    "left": pageX - 10,
+                    "top": pageY - 10,
+                })
+                $(".tp-warnof-infinity").fadeIn(200, function () {
+                    setTimeout(function () {
+                        $(".tp-warnof-infinity").fadeOut(100);
+                    }, 200)
+                });
+                $(this).val("");
             } else {
                 $(this).val(parseFloat($(this).val()));
             };
@@ -91,5 +109,11 @@ $(function () {
 
     });
 
+    $(".panel-heading").click(function () {
+        $(this).next().collapse('toggle');
+    })
+
     $(".tp-build").click(buildfunc);
+
+    $(".tp-PersistenceRequired").click();
 });

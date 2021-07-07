@@ -20,6 +20,10 @@
   <button class="tp-warnof-numberonly btn btn-danger" style="position: absolute; left: 0px; top: 0px" disabled>
     只能输入数字
   </button>
+  <button class="tp-warnof-infinity btn btn-danger" style="position: absolute; left: 0px; top: 0px" disabled>
+    输入的数字太大
+  </button>
+  <div class="tp-cover"></div>
   <div class="tp-content">
     <div class="container">
       <br />
@@ -27,7 +31,7 @@
         <h1>生物生成器</h1>
         <p>
           网页设计 -- <a href="https://myworldzycpc.github.io/">myworldzycpc</a><br>
-          游戏数据 -- <a href="https://theredmaker.github.io/">TheRedMaker_</a><br>
+          游戏数据 -- <a href="https://theredmaker.github.io/">TheRedMaker_</a>
         </p>
         <p>
           <a class="btn btn-primary" href="https://theredmaker.github.io/MCBiologicalAttrData.html">
@@ -55,413 +59,461 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">命名</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>名字</label>
-            <input type="text" class="tp-name form-control" placeholder="请输入名字">
-          </div>
-          <div class="form-group">
-            <label>颜色</label>
-            <select class="tp-namecolor form-control">
-              <option>默认</option>
-              <option>白色</option>
-              <option>黑色</option>
-              <option>红色</option>
-              <option>绿色</option>
-              <option>黄色</option>
-              <option>蓝色</option>
-              <option>橙色</option>
-              <option>青色</option>
-              <option>紫色</option>
-              <option>灰色</option>
-              <option>深蓝色</option>
-              <option>深绿色</option>
-              <option>深青色</option>
-              <option>深红色</option>
-              <option>深紫色</option>
-              <option>金色</option>
-              <option>非常默认</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">使用十六进制颜色（开启后禁用下拉）</span>
-              <span class="input-group-btn">
-                <button class="tp-colorhexswitch tp-switch btn btn-default">关</button>
-              </span>
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>名字</label>
+              <input type="text" class="tp-name form-control" placeholder="请输入名字">
             </div>
-          </div>
-          <div class="form-group text-muted">
-            <label>十六进制颜色代码</label>
-            <div class="input-group">
-              <span class="input-group-addon">#</span>
-              <input type="text" class="tp-colorhex form-control" placeholder="输入十六进制颜色代码" disabled>
+            <div class="form-group">
+              <label>颜色</label>
+              <select class="tp-namecolor form-control">
+                <option>默认</option>
+                <option>白色</option>
+                <option>黑色</option>
+                <option>红色</option>
+                <option>绿色</option>
+                <option>黄色</option>
+                <option>蓝色</option>
+                <option>橙色</option>
+                <option>青色</option>
+                <option>紫色</option>
+                <option>灰色</option>
+                <option>深蓝色</option>
+                <option>深绿色</option>
+                <option>深青色</option>
+                <option>深红色</option>
+                <option>深紫色</option>
+                <option>金色</option>
+                <option>非常默认</option>
+              </select>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">粗体</span>
-              <span class="input-group-btn">
-                <button class="tp-namebold tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">使用十六进制颜色（开启后禁用下拉）</span>
+                <span class="input-group-btn">
+                  <button class="tp-colorhexswitch tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">斜体</span>
-              <span class="input-group-btn">
-                <button class="tp-nameitalic tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group text-muted">
+              <label>十六进制颜色代码</label>
+              <div class="input-group">
+                <span class="input-group-addon">#</span>
+                <input type="text" class="tp-colorhex form-control" placeholder="输入十六进制颜色代码" disabled>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">下划线</span>
-              <span class="input-group-btn">
-                <button class="tp-nameunderlined tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">粗体</span>
+                <span class="input-group-btn">
+                  <button class="tp-namebold tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">删除线</span>
-              <span class="input-group-btn">
-                <button class="tp-namestrikethrough tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">斜体</span>
+                <span class="input-group-btn">
+                  <button class="tp-nameitalic tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">乱码</span>
-              <span class="input-group-btn">
-                <button class="tp-nameobfuscated tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">下划线</span>
+                <span class="input-group-btn">
+                  <button class="tp-nameunderlined tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <hr>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">始终显示名称</span>
-              <span class="input-group-btn">
-                <button class="tp-CustomNameVisible tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">删除线</span>
+                <span class="input-group-btn">
+                  <button class="tp-namestrikethrough tp-switch btn btn-default">关</button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">乱码</span>
+                <span class="input-group-btn">
+                  <button class="tp-nameobfuscated tp-switch btn btn-default">关</button>
+                </span>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">始终显示名称</span>
+                <span class="input-group-btn">
+                  <button class="tp-CustomNameVisible tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="tp-eq panel panel-default">
         <div class="panel-heading">装备</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>头部</label>
-            <div class="input-group">
-              <select class="tp-armor-helmet form-control">
-                <option>无</option>
-                <option>下界合金</option>
-                <option>钻石</option>
-                <option>黄金</option>
-                <option>铁</option>
-                <option>锁链</option>
-                <option>皮革</option>
-                <option>南瓜</option>
-                <option>南瓜灯</option>
-                <option>玻璃</option>
-                <option>命令方块</option>
-              </select>
-              <span class="input-group-addon form-control-static">不可破坏</span>
-              <span class="input-group-btn">
-                <button class="tp-armor-helmet-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
-              </span>
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>头部</label>
+              <div class="input-group">
+                <select class="tp-armor-helmet form-control">
+                  <option>无</option>
+                  <option>下界合金</option>
+                  <option>钻石</option>
+                  <option>黄金</option>
+                  <option>铁</option>
+                  <option>锁链</option>
+                  <option>皮革</option>
+                  <option>南瓜</option>
+                  <option>南瓜灯</option>
+                  <option>玻璃</option>
+                  <option>命令方块</option>
+                </select>
+                <span class="input-group-addon form-control-static">不可破坏</span>
+                <span class="input-group-btn">
+                  <button class="tp-armor-helmet-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label>身体</label>
-            <div class="input-group">
-              <select class="tp-armor-chestplate form-control">
-                <option>无</option>
-                <option>下界合金</option>
-                <option>钻石</option>
-                <option>黄金</option>
-                <option>铁</option>
-                <option>锁链</option>
-                <option>皮革</option>
-              </select>
-              <span class="input-group-addon form-control-static">不可破坏</span>
-              <span class="input-group-btn">
-                <button class="tp-armor-chestplate-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <label>身体</label>
+              <div class="input-group">
+                <select class="tp-armor-chestplate form-control">
+                  <option>无</option>
+                  <option>下界合金</option>
+                  <option>钻石</option>
+                  <option>黄金</option>
+                  <option>铁</option>
+                  <option>锁链</option>
+                  <option>皮革</option>
+                </select>
+                <span class="input-group-addon form-control-static">不可破坏</span>
+                <span class="input-group-btn">
+                  <button class="tp-armor-chestplate-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label>护腿</label>
-            <div class="input-group">
-              <select class="tp-armor-leggings form-control">
-                <option>无</option>
-                <option>下界合金</option>
-                <option>钻石</option>
-                <option>黄金</option>
-                <option>铁</option>
-                <option>锁链</option>
-                <option>皮革</option>
-              </select>
-              <span class="input-group-addon form-control-static">不可破坏</span>
-              <span class="input-group-btn">
-                <button class="tp-armor-leggings-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <label>护腿</label>
+              <div class="input-group">
+                <select class="tp-armor-leggings form-control">
+                  <option>无</option>
+                  <option>下界合金</option>
+                  <option>钻石</option>
+                  <option>黄金</option>
+                  <option>铁</option>
+                  <option>锁链</option>
+                  <option>皮革</option>
+                </select>
+                <span class="input-group-addon form-control-static">不可破坏</span>
+                <span class="input-group-btn">
+                  <button class="tp-armor-leggings-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label>靴子</label>
-            <div class="input-group">
-              <select class="tp-armor-boots form-control">
-                <option>无</option>
-                <option>下界合金</option>
-                <option>钻石</option>
-                <option>黄金</option>
-                <option>铁</option>
-                <option>锁链</option>
-                <option>皮革</option>
-              </select>
-              <span class="input-group-addon form-control-static">不可破坏</span>
-              <span class="input-group-btn">
-                <button class="tp-armor-boots-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <label>靴子</label>
+              <div class="input-group">
+                <select class="tp-armor-boots form-control">
+                  <option>无</option>
+                  <option>下界合金</option>
+                  <option>钻石</option>
+                  <option>黄金</option>
+                  <option>铁</option>
+                  <option>锁链</option>
+                  <option>皮革</option>
+                </select>
+                <span class="input-group-addon form-control-static">不可破坏</span>
+                <span class="input-group-btn">
+                  <button class="tp-armor-boots-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="tp-eq panel panel-default">
         <div class="panel-heading">武器</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>主手</label>
-            <div class="input-group">
-              <select class="tp-mainhand form-control">
-                <option>无</option>
-                <option>下界合金剑</option>
-                <option>钻石剑</option>
-                <option>金剑</option>
-                <option>铁剑</option>
-                <option>石剑</option>
-                <option>木剑</option>
-                <option>下界合金镐</option>
-                <option>钻石镐</option>
-                <option>金镐</option>
-                <option>铁镐</option>
-                <option>石镐</option>
-                <option>木镐</option>
-                <option>下界合金锄</option>
-                <option>钻石锄</option>
-                <option>金锄</option>
-                <option>铁锄</option>
-                <option>石锄</option>
-                <option>木锄</option>
-                <option>下界合金锹</option>
-                <option>钻石锹</option>
-                <option>金锹</option>
-                <option>铁锹</option>
-                <option>石锹</option>
-                <option>木锹</option>
-                <option>下界合金斧</option>
-                <option>钻石斧</option>
-                <option>金斧</option>
-                <option>铁斧</option>
-                <option>石斧</option>
-                <option>木斧</option>
-              </select>
-              <span class="input-group-addon form-control-static">不可破坏</span>
-              <span class="input-group-btn">
-                <button class="tp-mainhand-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
-              </span>
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>主手</label>
+              <div class="input-group">
+                <select class="tp-mainhand form-control">
+                  <option>无</option>
+                  <option>下界合金剑</option>
+                  <option>钻石剑</option>
+                  <option>金剑</option>
+                  <option>铁剑</option>
+                  <option>石剑</option>
+                  <option>木剑</option>
+                  <option>下界合金镐</option>
+                  <option>钻石镐</option>
+                  <option>金镐</option>
+                  <option>铁镐</option>
+                  <option>石镐</option>
+                  <option>木镐</option>
+                  <option>下界合金锄</option>
+                  <option>钻石锄</option>
+                  <option>金锄</option>
+                  <option>铁锄</option>
+                  <option>石锄</option>
+                  <option>木锄</option>
+                  <option>下界合金锹</option>
+                  <option>钻石锹</option>
+                  <option>金锹</option>
+                  <option>铁锹</option>
+                  <option>石锹</option>
+                  <option>木锹</option>
+                  <option>下界合金斧</option>
+                  <option>钻石斧</option>
+                  <option>金斧</option>
+                  <option>铁斧</option>
+                  <option>石斧</option>
+                  <option>木斧</option>
+                  <option>弓</option>
+                  <option>三叉戟</option>
+                </select>
+                <span class="input-group-addon form-control-static">不可破坏</span>
+                <span class="input-group-btn">
+                  <button class="tp-mainhand-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label>副手</label>
-            <div class="input-group">
-              <select class="tp-minorhand form-control">
-                <option>无</option>
-                <option>盾牌</option>
-                <option>不死图腾</option>
-                <option>光灵箭</option>
-                <option>下界合金剑</option>
-                <option>钻石剑</option>
-                <option>金剑</option>
-                <option>铁剑</option>
-                <option>石剑</option>
-                <option>木剑</option>
-                <option>下界合金镐</option>
-                <option>钻石镐</option>
-                <option>金镐</option>
-                <option>铁镐</option>
-                <option>石镐</option>
-                <option>木镐</option>
-                <option>下界合金锄</option>
-                <option>钻石锄</option>
-                <option>金锄</option>
-                <option>铁锄</option>
-                <option>石锄</option>
-                <option>木锄</option>
-                <option>下界合金锹</option>
-                <option>钻石锹</option>
-                <option>金锹</option>
-                <option>铁锹</option>
-                <option>石锹</option>
-                <option>木锹</option>
-                <option>下界合金斧</option>
-                <option>钻石斧</option>
-                <option>金斧</option>
-                <option>铁斧</option>
-                <option>石斧</option>
-                <option>木斧</option>
-              </select>
-              <span class="input-group-addon form-control-static">不可破坏</span>
-              <span class="input-group-btn">
-                <button class="tp-minorhand-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <label>副手</label>
+              <div class="input-group">
+                <select class="tp-minorhand form-control">
+                  <option>无</option>
+                  <option>盾牌</option>
+                  <option>不死图腾</option>
+                  <option>光灵箭</option>
+                  <option>下界合金剑</option>
+                  <option>钻石剑</option>
+                  <option>金剑</option>
+                  <option>铁剑</option>
+                  <option>石剑</option>
+                  <option>木剑</option>
+                  <option>下界合金镐</option>
+                  <option>钻石镐</option>
+                  <option>金镐</option>
+                  <option>铁镐</option>
+                  <option>石镐</option>
+                  <option>木镐</option>
+                  <option>下界合金锄</option>
+                  <option>钻石锄</option>
+                  <option>金锄</option>
+                  <option>铁锄</option>
+                  <option>石锄</option>
+                  <option>木锄</option>
+                  <option>下界合金锹</option>
+                  <option>钻石锹</option>
+                  <option>金锹</option>
+                  <option>铁锹</option>
+                  <option>石锹</option>
+                  <option>木锹</option>
+                  <option>下界合金斧</option>
+                  <option>钻石斧</option>
+                  <option>金斧</option>
+                  <option>铁斧</option>
+                  <option>石斧</option>
+                  <option>木斧</option>
+                  <option>弓</option>
+                  <option>三叉戟</option>
+                </select>
+                <span class="input-group-addon form-control-static">不可破坏</span>
+                <span class="input-group-btn">
+                  <button class="tp-minorhand-unbreakable tp-switch tp-peswitch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="tp-forcreeper panel panel-default">
         <div class="panel-heading">苦力怕专属</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>爆炸半径</label>
-            <input type="text" class="form-control" placeholder="请输入爆炸半径">
-          </div>
-          <div class="form-group">
-            <label>爆炸倒计时</label>
-            <input type="text" class="tp-explosion-countdown form-control" placeholder="请输入爆炸倒计时">
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">瞬间爆炸（开启后禁用爆炸倒计时）</span>
-              <span class="input-group-btn">
-                <button class="tp-inexswitch tp-switch btn btn-default">关</button>
-              </span>
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>爆炸半径</label>
+              <input type="text" class="tp-numberonly tp-ExplosionRadius form-control" placeholder="请输入爆炸半径（默认是3，数字越大爆炸半径越大）">
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">闪电苦力怕</span>
-              <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <label>爆炸倒计时</label>
+              <input type="text" class="tp-numberonly tp-Fuse tp-explosion-countdown form-control" placeholder="请输入爆炸倒计时（单位：游戏刻，20游戏刻=1秒，默认30，即1.5秒）">
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">被点燃（关闭后倒计时则作用于点燃后）</span>
+                <span class="input-group-btn">
+                  <button class="tp-ignited tp-switch btn btn-default">关</button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">闪电苦力怕</span>
+                <span class="input-group-btn">
+                  <button class="tp-power tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="tp-forslime panel panel-default">
         <div class="panel-heading">史莱姆专属</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>尺寸</label>
-            <input type="text" class="form-control" placeholder="请输入尺寸（1，2，3或更大）">
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>尺寸</label>
+              <input type="text" class="tp-numberonly tp-size form-control" placeholder="请输入尺寸（1，2，3或更大，自然生成最大是3，最小是0）">
+            </div>
           </div>
         </div>
       </div>
       <div class="tp-forghast panel panel-default">
         <div class="panel-heading">恶魂专属</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>火球爆炸威力</label>
-            <input type="text" class="form-control" placeholder="火球爆炸威力">
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>火球爆炸威力</label>
+              <input type="text" class="tp-numberonly tp-ExplosionPower form-control" placeholder="火球爆炸威力（默认为1）">
+            </div>
           </div>
         </div>
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">属性</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>血量</label>
-            <input type="text" class="tp-max-health tp-numberonly form-control" placeholder="请输入血量（2血量=1颗心）">
-          </div>
-          <div class="form-group">
-            <label>跟踪范围</label>
-            <input type="text" class="tp-follow-range tp-numberonly form-control" placeholder="请输入跟踪范围（格）">
-          </div>
-          <div class="form-group">
-            <label>移动速度</label>
-            <input type="text" class="tp-movement-speed tp-numberonly form-control"
-              placeholder="请输入移动速度（僵尸0.23，猪灵0.34，骷髅0.25，数字越大越快，对恶魂无效）">
-          </div>
-          <div class="form-group">
-            <label>击退抗性</label>
-            <input type="text" class="tp-knockback-resistance tp-numberonly form-control"
-              placeholder="请输入击退抗性（0.0~1.0，1是无击退）">
-          </div>
-          <div class="form-group">
-            <label>攻击伤害</label>
-            <input type="text" class="tp-attack-damage tp-numberonly form-control" placeholder="请输入攻击伤害">
-          </div>
-          <div class="form-group">
-            <label>攻击击退</label>
-            <input type="text" class="tp-attack-knockback tp-numberonly form-control" placeholder="请输入攻击击退">
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>血量</label>
+              <input type="text" class="tp-max-health tp-numberonly form-control" placeholder="请输入血量（2血量=1颗心）">
+            </div>
+            <div class="form-group">
+              <label>跟踪范围</label>
+              <input type="text" class="tp-follow-range tp-numberonly form-control" placeholder="请输入跟踪范围（格）">
+            </div>
+            <div class="form-group">
+              <label>移动速度</label>
+              <input type="text" class="tp-movement-speed tp-numberonly form-control"
+                placeholder="请输入移动速度（僵尸0.23，猪灵0.34，骷髅0.25，数字越大越快，对恶魂无效）">
+            </div>
+            <div class="form-group">
+              <label>击退抗性</label>
+              <input type="text" class="tp-knockback-resistance tp-numberonly form-control"
+                placeholder="请输入击退抗性（0.0~1.0，1是无击退）">
+            </div>
+            <div class="form-group">
+              <label>攻击伤害</label>
+              <input type="text" class="tp-attack-damage tp-numberonly form-control" placeholder="请输入攻击伤害">
+            </div>
+            <div class="form-group">
+              <label>攻击击退</label>
+              <input type="text" class="tp-attack-knockback tp-numberonly form-control" placeholder="请输入攻击击退">
+            </div>
           </div>
         </div>
       </div>
       <div class="tp-eq panel panel-default">
         <div class="panel-heading">装备掉落几率</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <label>主手掉落几率</label>
-            <input type="text" class="form-control" placeholder="请输入">
-          </div>
-          <div class="form-group">
-            <label>副手掉落几率</label>
-            <input type="text" class="form-control" placeholder="请输入">
-          </div>
-          <div class="form-group">
-            <label>头部盔甲掉落几率</label>
-            <input type="text" class="form-control" placeholder="请输入">
-          </div>
-          <div class="form-group">
-            <label>上身盔甲掉落几率</label>
-            <input type="text" class="form-control" placeholder="请输入">
-          </div>
-          <div class="form-group">
-            <label>护腿盔甲掉落几率</label>
-            <input type="text" class="form-control" placeholder="请输入">
-          </div>
-          <div class="form-group">
-            <label>靴子盔甲掉落几率</label>
-            <input type="text" class="form-control" placeholder="请输入">
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>主手掉落几率</label>
+              <div class="input-group">
+                <input type="text" class="tp-HandDropChances-1 form-control" placeholder="请输入主手掉落几率（0~100）">
+                <span class="input-group-addon">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>副手掉落几率</label>
+              <div class="input-group">
+                <input type="text" class="tp-HandDropChances-2 form-control" placeholder="请输入副手掉落几率（0~100）">
+                <span class="input-group-addon">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>头部盔甲掉落几率</label>
+              <div class="input-group">
+                <input type="text" class="tp-ArmorDropChances-h form-control" placeholder="请输入头部盔甲掉落几率（0~100）">
+                <span class="input-group-addon">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>上身盔甲掉落几率</label>
+              <div class="input-group">
+                <input type="text" class="tp-ArmorDropChances-c form-control" placeholder="请输入上身盔甲掉落几率（0~100）">
+                <span class="input-group-addon">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>护腿盔甲掉落几率</label>
+              <div class="input-group">
+                <input type="text" class="tp-ArmorDropChances-l form-control" placeholder="请输入护腿盔甲掉落几率（0~100）">
+                <span class="input-group-addon">%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>靴子盔甲掉落几率</label>
+              <div class="input-group">
+                <input type="text" class="tp-ArmorDropChances-b form-control" placeholder="请输入靴子盔甲掉落几率（0~100）">
+                <span class="input-group-addon">%</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">其他</div>
-        <div class="panel-body">
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">捡起装备</span>
-              <span class="input-group-btn">
-                <button class="tp-switch tp-peswitch btn btn-default">关</button>
-              </span>
+        <div class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="tp-eq form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">捡起装备</span>
+                <span class="input-group-btn">
+                  <button class="tp-CanPickupLoot tp-switch tp-peswitch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">破坏门</span>
-              <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
-              </span>
+            <div class="tp-CanBreakDoors-group form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">破坏门</span>
+                <span class="input-group-btn">
+                  <button class="tp-CanBreakDoors tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">自动删除（当生物在玩家渲染距离外时是否被自动删除）</span>
-              <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
-              </span>
+            <div class="tp-IsBaby-group form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">幼年的</span>
+                <span class="input-group-btn">
+                  <button class="tp-IsBaby tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon form-control-static">保持沉默</span>
-              <span class="input-group-btn">
-                <button class="tp-switch btn btn-default">关</button>
-              </span>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">自动删除（当生物在玩家渲染距离外时是否被自动删除）</span>
+                <span class="input-group-btn">
+                  <button class="tp-PersistenceRequired tp-switch btn btn-default">关</button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon form-control-static">保持沉默</span>
+                <span class="input-group-btn">
+                  <button class="tp-Silent tp-switch btn btn-default">关</button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -471,7 +523,7 @@
         <button class="tp-build btn btn-primary btn-block">生成指令（还没做好）</button>
       </div>
       <span>结果（连点三下可以全部选中，然后按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 复制）</span>
-      <div class="well" style="background-image: url(../static/mywzy_and_trm.png); background-size: cover;background-position: center center;">
+      <div class="tp-result-bg well">
         <pre class="tp-result"></pre>
       </div>
       <p><small>潜行的是myworldzycpc，另一个是TheRedMaker_</small></p>

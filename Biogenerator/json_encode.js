@@ -7,8 +7,9 @@ const JSON_UNESCAPED_SLASHES = 64;
 const JSON_UNESCAPED_UNICODE = 256;
 const JSON_FORCE_OBJECT = 16;
 
+gettype = Object.prototype.toString;
+
 function json_encode(val, options = 0) {
-    var gettype = Object.prototype.toString;
     switch (gettype.call(val)) {
         case '[object String]':
             return `"${json_escape_string(val, options)}"`;
