@@ -1,0 +1,37 @@
+@font-face {
+    font-family: minecraft;
+    src: url('https://myworldzycpc.github.io/files/minecraft.ttf');
+}
+
+.tp-result {
+    white-space: pre-wrap;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-shadow: 6px 6px rgba(0, 0, 0, 0.5);
+    font-family: minecraft;
+    font-size: 36px;
+}
+
+.tp-result-bg {
+    background-image: url(../static/mywzy_and_trm.png);
+    background-size: cover;
+    background-position: center center;
+}
+
+.panel-heading, select {
+    cursor: pointer;
+}
+
+.panel-heading:hover, select:hover {
+    filter: brightness(0.9);
+}
+
+.tp-cover {
+    background-image: url(../static/cover.png);
+    background-size: 100% 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
