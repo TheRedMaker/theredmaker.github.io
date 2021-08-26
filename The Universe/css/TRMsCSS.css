@@ -1,0 +1,185 @@
+body
+{
+    background-color:rgb(32, 33, 36);
+    color:rgb(210, 210, 210);
+    font-size:20px;
+}
+
+div.main_heading
+{
+    background-color:rgb(53, 54, 58);
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+div.frame
+{
+    margin-bottom:20px;
+}
+
+div.frame_heading
+{
+    border:2px solid rgb(210, 210, 210);
+    border-radius:8px 8px 0px 0px;
+    border-bottom-color:transparent;
+    background-color:rgb(53, 54, 58);
+}
+
+div.frame_heading span.fh
+{
+    display:block;
+    padding:7px 14px;
+}
+
+div.frame_body
+{
+    border:2px solid rgb(210, 210, 210);
+    border-radius:0px 0px 8px 8px;
+}
+
+div.frame_body div.fb
+{
+    padding:14px;
+}
+
+div.frame label
+{
+    display:block;
+    margin-bottom:10px;
+}
+
+button.rbtn
+{
+    width:100%;
+    background-color:rgb(35, 134, 54);
+    outline-style:none;
+    border:2px solid transparent;
+    border-radius:8px;
+    font-size:20px;
+    color:rgb(210, 210, 210);
+    padding:5px 10px;
+    transition:box-shadow 0.2s;
+}
+button.rbtn:hover
+{
+    box-shadow:0px 0px 12px rgb(35, 164, 54);
+}
+button.rbtn:active
+{
+    border:2px solid rgb(35, 164, 54);
+}
+
+input[type="text"]
+{
+    box-sizing:border-box;
+    width:100%;
+    background-color:rgb(32, 33, 36);
+    outline-style:none;
+    border:2px solid rgb(210, 210, 210);
+    border-radius:8px;
+    color:rgb(210, 210, 210);
+    font-size:20px;
+    padding:7px 12px;
+    transition:border 0.2s, box-shadow 0.2s;
+}
+input[type="text"]:focus
+{
+    border:2px solid rgb(35, 164, 54);
+    box-shadow:0px 0px 12px rgb(35, 164, 54);
+}
+
+span.checkbtn.on
+{
+    border:2px solid transparent;
+    border-radius:0px 8px 8px 0px;
+    background-color:rgb(35, 134, 54);
+    color:rgb(210, 210, 210);
+    padding:7px 12px;
+    transition:box-shadow 0.2s;
+    display:table-cell;
+}
+span.checkbtn.on:hover
+{
+    box-shadow:0px 0px 12px rgb(35, 164, 54);
+}
+span.checkbtn.on:active
+{
+    border:2px solid rgb(35, 164, 54);
+}
+
+span.checkbtn.off
+{
+    border:2px solid transparent;
+    border-radius:0px 8px 8px 0px;
+    background-color:rgb(170, 0, 0);
+    color:rgb(210, 210, 210);
+    padding:7px 12px;
+    transition:box-shadow 0.2s;
+    display:table-cell;
+}
+span.checkbtn.off:hover
+{
+    box-shadow:0px 0px 12px rgb(240, 0, 0);
+}
+span.checkbtn.off:active
+{
+    border:2px solid rgb(240, 0, 0);
+}
+
+span.checkbtn_label.off
+{
+    border:2px solid rgb(170, 0, 0);
+    border-radius:8px 0px 0px 8px;
+    background-color:rgb(32, 33, 36);
+    color:rgb(210, 210, 210);
+    padding:7px 12px;
+    display:table-cell;
+}
+span.checkbtn_label.on
+{
+    border:2px solid rgb(35, 134, 54);
+    border-radius:8px 0px 0px 8px;
+    background-color:rgb(32, 33, 36);
+    color:rgb(210, 210, 210);
+    padding:7px 12px;
+    display:table-cell;
+}
+
+select.combobox
+{
+    width:100%;
+    outline-style:none;
+    border:2px solid rgb(210, 210, 210);
+    border-radius:8px 8px 0px 0px;
+    background-color:rgb(32, 33, 36);
+    font-size:20px;
+    color:rgb(210, 210, 210);
+    padding:7px 12px;
+    transition:box-shadow 0.2s, border 0.2s;
+}
+select.combobox:focus
+{
+    border:2px solid rgb(35, 164, 54);
+    box-shadow:0px 0px 12px rgb(35, 164, 54);
+}
+
+div.more_info
+{
+    display:none;
+    position:absolute;
+    border-radius:0px 0px 8px 8px;
+    border:2px solid rgb(210, 210, 210);
+    border-top-color:transparent;
+    background-color:rgb(53, 54, 58);
+}
+div.more_info span.mi
+{
+    display:block;
+    padding:7px 14px;
+}
+
+@font-face
+{
+    font-family:mc_font;
+    src:url(fonts/minecraft.ttf);
+}
