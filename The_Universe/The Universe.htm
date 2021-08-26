@@ -1,0 +1,116 @@
+<!doctype html>
+
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>The Universe</title>
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="css/TRMsCSS.css">
+        <script>
+            $(
+                function()
+                {
+                    //code
+                    var texts = [
+                        "8e96年后",
+                        "最后一个黑洞爆炸将是宇宙中最后一次出现光明",
+                        "经过难以想象的漫长时光，连黑洞也蒸发了",
+                        "宇宙中将只剩下光子，变成光子的海洋",
+                        "随着宇宙膨胀，光子也将逐渐朝着绝对零度冷却",
+                        "最后的残骸化为乌之后",
+                        "万物都达到相同的温度，宇宙的故事就此终结",
+                        "时间失去意义",
+                        "宇宙诞生以来第一次进入永恒不变的状态",
+                        "熵增终于停下了脚步，因为宇宙已经到了无序的尽头",
+                        "什么都不会发生，就这样，直到永远..."
+                    ]
+
+                    var index = 0
+                    var te = $("p.text")
+                    var playing = false
+
+                    function display(i)
+                    {
+                        if (index < texts.length)
+                        {
+                            te.text(texts[i])
+                            te.fadeToggle(2000, function(){
+                                setTimeout(function(){
+                                    te.fadeToggle(2000, function(){
+                                        setTimeout(function(){
+                                            index = index + 1
+                                            display(index)
+                                        }, 1000)
+                                    })
+                                }, 2000)
+                            })
+                        }
+                        else
+                        {
+                            te.text("Made By TheRedMaker_")
+                            te.fadeToggle(2000, function(){
+                                setTimeout(function(){
+                                    te.fadeToggle(4000)
+                                    $("div.screen").fadeToggle(4000)
+                                }, 3000)
+                            })
+                        }
+                    }
+
+                    $("body").click(function(){
+                        if (playing == false)
+                        {
+                            playing = true
+                            te.hide()
+                            $("audio.test").get(0).volume = 0.6
+                            $("audio.test").trigger("play")
+                            display(index)
+                        }
+                    })
+                    //end
+                }
+            )
+        </script>
+        <style>
+            html, body
+            {
+                margin:0px;
+                width:100%;
+                height:100%;
+            }
+
+            div.screen
+            {
+                display:none;
+                position:absolute;
+                width:100%;
+                height:100%;
+                top:0px;
+                left:0px;
+                background-color:rgb(0, 0, 0);
+            }
+
+            p.text
+            {
+                position:absolute;
+                margin:0px;
+                top:50%;
+                left:50%;
+                transform:translate(-50%, -50%);
+                width:100%;
+                text-align:center;
+                font-size:30px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="screen"></div>
+        <p class="text">单击屏幕开始</p>
+        <audio class="test">
+            <source src="css/sounds/city_of_ghosts.mp3">
+        </audio>
+    </body>
+
+</html>
