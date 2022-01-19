@@ -1,1 +1,1 @@
-# Minecraft DropItem Generator 1.0
+# Minecraft掉落物生成器 -- 更新了一些内容

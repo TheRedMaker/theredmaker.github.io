@@ -77,3 +77,8 @@ a:hover {
     width: 6px;
     border-radius: 3px;
 }
+
+.textEdit .input-group-text:hover {
+    cursor: pointer;
+    background-color: #c5c8ca;
+}

@@ -60,83 +60,33 @@
                 
                                 <!-- 掉落物名称 -->
                                 <div class="tab-pane active" id="dropItemName">
-                                    <div class="mb-4">
-                                        <label class="bold form-label">掉落物名称<i class="bi-question-circle-fill iconFontSize ms-3" data-bs-toggle="modal" data-bs-target="#dropItemNameHelp"></i></label>
+                                    <label class="bold form-label">掉落物名称<i class="bi-question-circle-fill iconFontSize ms-3" data-bs-toggle="modal" data-bs-target="#dropItemNameHelp"></i></label>
+                                    <div class="input-group dinTextEdit textEdit">
                                         <input type="text" class="form-control dropItemName" placeholder="掉落物名称">
-                                    </div>
-        
-                                    <div class="d-flex">
-                                        <div class="me-5">
-                                            <label class="bold form-label">颜色</label>
+                                        <span class="input-group-text">
                                             <input type="color" class="form-control form-control-color dinCustomColor" value="#ffffff">
-                                        </div>
-            
-                                        <div class="ms-5" style="width: 600px;">
-                                            <label class="bold form-label">样式</label>
-                                            <div class="d-flex flex-wrap">
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="dinbold">
-                                                    <label class="form-check-label" for="dinbold">粗体</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="dinitalic">
-                                                    <label class="form-check-label" for="dinitalic">斜体</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="dinunderline">
-                                                    <label class="form-check-label" for="dinunderline">下划线</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="dinstrike">
-                                                    <label class="form-check-label" for="dinstrike">删除线</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="dinunknown">
-                                                    <label class="form-check-label" for="dinunknown">乱码</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>    
+                                        </span>
+                                        <span class="input-group-text bi-type-bold dinbold" style="font-size:20px;"></span>
+                                        <span class="input-group-text bi-type-italic dinitalic" style="font-size:20px;"></span>
+                                        <span class="input-group-text bi-type-underline dinunderline" style="font-size:20px;"></span>
+                                        <span class="input-group-text bi-type-strikethrough dinstrike" style="font-size:20px;"></span>
+                                        <span class="input-group-text dinunknown">乱码</span>
+                                    </div>
                                 </div>
         
                                 <!-- 物品名称 -->
                                 <div class="tab-pane" id="itemName">
-                                    <div class="mb-4">
-                                        <label class="bold form-label">物品名称<i class="bi-question-circle-fill iconFontSize ms-3" data-bs-toggle="modal" data-bs-target="#itemNameHelp"></i></label>
-                                        <input type="text" class="form-control itemName" placeholder="物品名称">
-                                    </div>
-        
-                                    <div class="d-flex">
-                                        <div class="me-5">
-                                            <label class="bold form-label">颜色</label>
+                                    <label class="bold form-label">物品名称<i class="bi-question-circle-fill iconFontSize ms-3" data-bs-toggle="modal" data-bs-target="#dropItemNameHelp"></i></label>
+                                    <div class="input-group inTextEdit textEdit">
+                                        <input type="text" class="form-control ItemName" placeholder="物品名称">
+                                        <span class="input-group-text">
                                             <input type="color" class="form-control form-control-color inCustomColor" value="#ffffff">
-                                        </div>
-            
-                                        <div class="ms-5" style="width: 600px;">
-                                            <label class="bold form-label">样式</label>
-                                            <div class="d-flex flex-wrap">
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="inbold">
-                                                    <label class="form-check-label" for="inbold">粗体</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="initalic">
-                                                    <label class="form-check-label" for="initalic">斜体</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="inunderline">
-                                                    <label class="form-check-label" for="inunderline">下划线</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="instrike">
-                                                    <label class="form-check-label" for="instrike">删除线</label>
-                                                </div>
-                                                <div class="form-check form-switch flex-fill">
-                                                    <input type="checkbox" class="form-check-input" id="inunknown">
-                                                    <label class="form-check-label" for="inunknown">乱码</label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </span>
+                                        <span class="input-group-text bi-type-bold inbold" style="font-size:20px;"></span>
+                                        <span class="input-group-text bi-type-italic initalic" style="font-size:20px;"></span>
+                                        <span class="input-group-text bi-type-underline inunderline" style="font-size:20px;"></span>
+                                        <span class="input-group-text bi-type-strikethrough instrike" style="font-size:20px;"></span>
+                                        <span class="input-group-text inunknown">乱码</span>
                                     </div>
                                 </div>
                             </div>
