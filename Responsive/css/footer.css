@@ -1,0 +1,30 @@
+footer {
+	margin-top: 50px;
+	padding: 12px;
+	height: 120px;
+	background-color: #40739e;
+}
+footer ul {
+	display: flex;
+	justify-content: center;
+}
+footer ul li:nth-child(even) {
+	margin: 0 80px;
+	width: 2px;
+	height: 100px;
+	background-color: white;
+}
+
+
+
+
+@media screen and (max-width: 780px) {
+	footer {
+		margin-top: 100px;
+	}
+}
+@media screen and (max-width: 620px) {
+	footer ul li:nth-child(even) {
+		margin: 0 20px;
+	}
+}

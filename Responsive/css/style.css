@@ -1,0 +1,45 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Jetbrains Mono Light";
+}
+
+body {
+	width: 100%;
+	background-color: #bdc3c7;
+	font-size: 18px;
+}
+
+a {
+	text-decoration: none;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.splitLine {
+	margin: 12px 0;
+	outline: none;
+	border: 3px solid #e67e22;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+@media screen and (min-width: 1331px) {
+	body {
+		margin: 0 auto;
+		width: 1331px;
+	}
+}
+@media screen and (max-width: 400px) {
+	body {
+		width: 400px;
+	}
+}

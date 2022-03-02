@@ -1,0 +1,173 @@
+main {
+	margin-top: 50px;
+	padding: 0 24px;
+}
+main .mainTop {
+	display: grid;
+	grid-template-columns: 60% 40%;
+}
+main .mainTop .banner {
+	margin-top: 36px;
+}
+main .mainTop .importantNews ul {
+	display: grid;
+	grid-template-columns: 50% 50%;
+	grid-column-gap: 16px;
+	font-size: 16px;
+}
+main .mainTop .importantNews ul li {
+	white-space: nowrap;
+	text-align: center;
+}
+main .mainTop .importantNews ul li div {
+	margin: 0 auto;
+	margin-bottom: 8px;
+	width: 100px;
+	height: 100px;
+	background-color: #2ecc71;
+}
+main .mainTop .importantNews ul li p,
+main .mainTop .importantNews ul li h4
+{
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+main .mainTop .importantNews ul li:nth-child(n+3) {
+	margin-top: 30px;
+}
+
+
+
+
+main .mainMiddle {
+	display: grid;
+	grid-template-columns: 52% 44%;
+	grid-template-rows: 380px;
+	grid-column-gap: 42px;
+}
+main .mainMiddle .resourcepacks {
+	position: relative;
+	top: -220px;
+}
+main .mainMiddle .resourcepacks ul li {
+	font-size: 16px;
+}
+main .mainMiddle .resourcepacks ul li:nth-child(n+2) {
+	margin-top: 20px;
+}
+main .mainMiddle .resourcepacks ul li .rpimg {
+	float: left;
+	margin-right: 20px;
+	width: 100px;
+	height: 100px;
+	background-color: #e74c3c;
+}
+main .mainMiddle .resourcepacks ul li p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+
+
+main .mainMiddle .minecraftVersion {
+	margin-top: 40px;
+}
+main .mainMiddle .minecraftVersion .MCPic {
+	width: 100%;
+	height: 100px;
+	background-color: #3498db;
+}
+main .mainMiddle .minecraftVersion>div h3 {
+	margin: 20px 0;
+	text-align: center;
+}
+main .mainMiddle .minecraftVersion>div>div:last-child {
+	text-align: center;
+}
+main .mainMiddle .minecraftVersion>div>div:last-child button {
+	width: 100%;
+	outline: none;
+	border: 1px solid black;
+	padding: 8px 8px;
+	border-radius: 8px;
+	font-weight: bold;
+	font-size: 18px;
+	cursor: pointer;
+	background-color: #f39c12;
+	transition: background-color .4s, transform .2s;
+}
+main .mainMiddle .minecraftVersion>div>div:last-child button:hover {
+	background-color: #f1c40f;
+}
+main .mainMiddle .minecraftVersion>div>div:last-child button:active {
+	transform: scale(.9, .9);
+}
+
+
+
+
+@media screen and (max-width: 780px) {
+	main .mainTop .importantNews {
+		grid-row: 2 / 3;
+	}
+	main .mainTop .banner {
+		grid-column: 1 / 3;
+		margin-top: 0;
+		text-align: center;
+	}
+	main .mainTop .importantNews {
+		margin-top: 30px;
+		grid-column: 1 / 3;
+	}
+	main .mainTop .importantNews ul li div {
+		float: left;
+		margin: 0;
+		margin-right: 20px;
+	}
+	main .mainTop .importantNews ul li {
+		text-align: left;
+	}
+
+
+	main .mainMiddle .resourcepacks {
+		position: static;
+		margin-top: 40px;
+	}
+
+	main .mainMiddle {
+		grid-template-rows: auto;
+	}
+}
+
+@media screen and (max-width: 620px) {
+	main .mainMiddle {
+		grid-template-columns: 100%;
+		grid-column-gap: 0px;
+	}
+	main .mainMiddle .resourcepacks {
+		grid-column: 1 / 3;
+	}
+	main .mainMiddle .minecraftVersion {
+		grid-column: 1 / 3;
+		grid-row: 2 / 3;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	main .mainTop .importantNews ul li div {
+		float: none;
+		margin: 0 auto;
+		margin-bottom: 8px;
+	}
+	main .mainTop .importantNews ul li {
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	main .mainTop .banner img {
+		width: 100%;
+	}
+}
