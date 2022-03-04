@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>日历</title>
+
+		<link rel="stylesheet" href="icons-1.8.1/font/bootstrap-icons.css">
+		<link rel="stylesheet" href="css/main.css">
+
+		<script src="js/jquery-3.6.0.min.js"></script>
+		<script src="js/Time.js"></script>
+		<script src="js/main.js"></script>
+	</head>
+
+	<body>
+
+		<section class="loadAnimation"></section>
+
+		<section class="chooseMonth">
+			<select>
+				<option value=1>1月</option>
+				<option value=2>2月</option>
+				<option value=3>3月</option>
+				<option value=4>4月</option>
+				<option value=5>5月</option>
+				<option value=6>6月</option>
+				<option value=7>7月</option>
+				<option value=8>8月</option>
+				<option value=9>9月</option>
+				<option value=10>10月</option>
+				<option value=11>11月</option>
+				<option value=12>12月</option>
+			</select>
+		</section>
+
+		<section class="calendarFrame">
+			<section class="calendar">
+				<div class="change">
+					<div class="textFrame">
+						<span></span>
+						<h1>LOADING...</h1>
+					</div>
+				</div>
+				<div class="top">
+					<span class="bi-caret-left-fill left"></span>
+					<span class="bi-caret-right-fill right"></span>
+					<h1></h1>
+					<p></p>
+				</div>
+				<div class="bottom">
+					<ul>
+						<li>MON</li>
+						<li>TUE</li>
+						<li>WED</li>
+						<li>THU</li>
+						<li>FRI</li>
+						<li>SAT</li>
+						<li>SUN</li>
+					</ul>
+				</div>
+			</section>
+		</section>
+
+	</body>
+
+</html>
