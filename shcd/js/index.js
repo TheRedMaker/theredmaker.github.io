@@ -1,7 +1,8 @@
 $(function(){
 
     // 倒计时
-    var currentTime = (new Date("2022/06/13 16:30:00").getTime() / 1000) - (new Date().getTime() / 1000);
+    const targetTime = new Date("2022/06/13 16:30:00").getTime() / 1000;
+    var currentTime = targetTime - (new Date().getTime() / 1000);
     const normalTime = new Date("2022/05/30 00:00:00").getTime() / 1000;
     const goodTime = new Date("2022/06/06 00:00:00").getTime() / 1000;
 
@@ -35,13 +36,18 @@ $(function(){
             let seconds = String(Math.floor(currentTime % 60)).padStart(2, "0");
             $($time[3]).text(seconds);
 
+            if (currentTime <= 0) {
+                clearInterval(cdWhile);
+            }
+
             currentTime--;
 
     }
 
-    cd();
-
-    setInterval(cd, 1000);
+    if (currentTime <= 0) {
+        cd();
+        var cdWhile = setInterval(cd, 1000);
+    }
 
 
 
