@@ -22,6 +22,7 @@ body.good {
 }
 
 h1, h3 {
+    text-align: center;
     color: white;
     cursor: default
 }
@@ -110,9 +111,14 @@ h1, h3 {
         width: 1331px;
     }
 }
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 1330px) {
     body {
         margin: 0;
         width: 100%;
+    }
+}
+@media screen and (max-width: 450px) {
+    body {
+        width: 450px;
     }
 }

@@ -44,7 +44,7 @@ $(function(){
 
     }
 
-    if (currentTime <= 0) {
+    if (currentTime > 0) {
         cd();
         var cdWhile = setInterval(cd, 1000);
     }
