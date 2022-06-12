@@ -1,10 +1,10 @@
 $(function(){
 
     // 倒计时
-    const targetTime = new Date("2022/06/13 16:30:00").getTime() / 1000;
+    const targetTime = new Date("2022/06/28 16:30:00").getTime() / 1000;
     var currentTime = targetTime - (new Date().getTime() / 1000);
-    const normalTime = new Date("2022/05/30 00:00:00").getTime() / 1000;
-    const goodTime = new Date("2022/06/06 00:00:00").getTime() / 1000;
+    const normalTime = new Date("2022/06/17 00:00:00").getTime() / 1000;
+    const goodTime = new Date("2022/06/24 00:00:00").getTime() / 1000;
 
     const $body = $("body");
     if (currentTime >= normalTime && currentTime < goodTime) {
