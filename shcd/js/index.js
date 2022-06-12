@@ -2,7 +2,8 @@ $(function(){
 
     // 倒计时
     const targetTime = new Date("2022/06/28 16:30:00").getTime() / 1000;
-    var currentTime = targetTime - (new Date().getTime() / 1000);
+    const currentTime = new Date().getTime() / 1000;
+    var timeLeft = targetTime - currentTime;
     const normalTime = new Date("2022/06/17 00:00:00").getTime() / 1000;
     const goodTime = new Date("2022/06/24 00:00:00").getTime() / 1000;
 
@@ -24,27 +25,27 @@ $(function(){
 
             const $time = $(".time .num");
             // 天
-            let days = String(Math.floor(currentTime / 60 / 60 / 24)).padStart(2, "0");
+            let days = String(Math.floor(timeLeft / 60 / 60 / 24)).padStart(2, "0");
             $($time[0]).text(days);
             // 时
-            let hours = String(Math.floor(currentTime / 60 / 60 % 24)).padStart(2, "0");
+            let hours = String(Math.floor(timeLeft / 60 / 60 % 24)).padStart(2, "0");
             $($time[1]).text(hours);
             // 分
-            let minutes = String(Math.floor(currentTime / 60 % 60)).padStart(2, "0");
+            let minutes = String(Math.floor(timeLeft / 60 % 60)).padStart(2, "0");
             $($time[2]).text(minutes);
             // 秒
-            let seconds = String(Math.floor(currentTime % 60)).padStart(2, "0");
+            let seconds = String(Math.floor(timeLeft % 60)).padStart(2, "0");
             $($time[3]).text(seconds);
 
-            if (currentTime <= 0) {
+            if (timeLeft <= 0) {
                 clearInterval(cdWhile);
             }
 
-            currentTime--;
+            timeLeft--;
 
     }
 
-    if (currentTime > 0) {
+    if (timeLeft > 0) {
         cd();
         var cdWhile = setInterval(cd, 1000);
     }
