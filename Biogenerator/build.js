@@ -199,6 +199,7 @@ function b_others() {
     if ($(".tp-Silent").html() == "开") {
         nbt_root.add_child("Silent", new nbtBool(true));
     };
+    nbt_root.add_child("LeftHanded", new nbtNumber(1, 'b'));
 };
 
 function b_slime() {
