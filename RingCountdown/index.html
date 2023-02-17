@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>圆环倒计时</title>
+
+        <link rel="stylesheet" href="./style.css">
+
+        <script src="./main.js"></script>
+    </head>
+
+    <body>
+
+        <div class="theBox">
+            <svg class="ringBox">
+                <circle class="ringBG" cx="50%" cy="50%" r="200"></circle>
+                <circle class="ring day" cx="50%" cy="50%" r="200" style="--radius:200; --color:rgb(216, 51, 51);"></circle>
+    
+                <circle class="ringBG" cx="50%" cy="50%" r="176"></circle>
+                <circle class="ring hour" cx="50%" cy="50%" r="176" style="--radius:176; --color:rgb(216, 172, 52);"></circle>
+    
+                <circle class="ringBG" cx="50%" cy="50%" r="152"></circle>
+                <circle class="ring minute" cx="50%" cy="50%" r="152" style="--radius:152; --color:rgb(88, 212, 50);"></circle>
+    
+                <circle class="ringBG" cx="50%" cy="50%" r="128"></circle>
+                <circle class="ring second" cx="50%" cy="50%" r="128" style="--radius:128; --color:rgb(52, 211, 203);"></circle>
+            </svg>
+
+            <span class="time">
+                <span class="day" style="--color:rgb(216, 51, 51);">0</span>
+                <br><br>
+                <span class="hour" style="--color:rgb(216, 172, 52);">00</span>
+                :
+                <span class="minute" style="--color:rgb(88, 212, 50);">00</span>
+                :
+                <span class="second" style="--color:rgb(52, 211, 203);">00</span>
+            </span>
+        </div>
+
+    </body>
+
+</html>

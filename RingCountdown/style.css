@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --lineWidth: 12;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #036583;
+}
+
+
+
+.theBox {
+    position: relative;
+    max-width: 600px;
+    max-height: 600px;
+    width: 100%;
+    height: 100%;
+}
+.theBox .time {
+    position: absolute;
+    top: calc(50% - 4px);
+    left: 50%;
+    text-align: center;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    text-shadow: 0 0 5px black;
+    transform: translate(-50%, -50%);
+}
+.theBox .time>span {
+    color: var(--color);
+}
+
+
+
+.ringBox {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.ringBox circle {
+    stroke-width: var(--lineWidth);
+    stroke-dashoffset: 0;
+    fill: none;
+    transition: stroke-dashoffset .4s;
+}
+.ringBox .ring {
+    stroke: var(--color);
+    stroke-dasharray: calc(var(--radius) * 2 * 3.14);
+    stroke-dashoffset: calc(var(--radius) * 2 * 3.14);
+    stroke-linecap: round;
+}
+.ringBox .ringBG {
+    stroke-width: 14px;
+}
