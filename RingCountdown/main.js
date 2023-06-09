@@ -19,7 +19,7 @@ function countDown() {
 
     let currentMS = (new Date()).getTime();
     let startMS = (new Date(2023, 5, 8, 00, 00, 00)).getTime();
-    let targetMS = (new Date(2023, 5, 30, 16, 30, 00)).getTime();
+    let targetMS = (new Date(2023, 6, 1, 16, 30, 00)).getTime();
     let timeDiffS = (targetMS - currentMS)  / 1000;
 
     let startDayDiff = (targetMS - startMS) / 1000 / 60 / 60 / 24;
