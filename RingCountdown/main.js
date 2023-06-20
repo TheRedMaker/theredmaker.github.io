@@ -18,8 +18,8 @@ function countDown() {
     const $secondRing = document.querySelector(".theBox .ringBox .second");
 
     let currentMS = (new Date()).getTime();
-    let startMS = (new Date(2023, 5, 8, 00, 00, 00)).getTime();
-    let targetMS = (new Date(2023, 6, 1, 16, 30, 00)).getTime();
+    let startMS = (new Date(2023, 3, 16, 00, 00, 00)).getTime();
+    let targetMS = (new Date(2023, 6, 4, 16, 30, 00)).getTime();
     let timeDiffS = (targetMS - currentMS)  / 1000;
 
     let startDayDiff = (targetMS - startMS) / 1000 / 60 / 60 / 24;
